@@ -1,0 +1,6 @@
+com_user_homepage:
+    path:     /
+    defaults: { _controller: COMUserBundle:User:index }
+com_user_login:
+    path:     /login
+    defaults: { _controller: COMUserBundle:User:login }
