@@ -20,8 +20,6 @@ class BusinessController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$productRepository = $em->getRepository('COMBusinessBundle:Product');
-		$categoryRepository = $em->getRepository('COMBusinessBundle:Category');
-		$brandRepository = $em->getRepository('COMBusinessBundle:Brand');
 		
 		$products = $productRepository->findBy(array(
 			'deleted' => false,
@@ -155,6 +153,7 @@ class BusinessController extends Controller
 		$stockRepository = $em->getRepository('COMBusinessBundle:Stock');
 		
 		$product = $productRepository->find($product_id);
+		$session = $request->getSession();
 		
 		if($product){
 			$stocks = $stockRepository->findBy(array(
@@ -167,8 +166,6 @@ class BusinessController extends Controller
 					'type' => 'warning',
 					'message' => "Des mouvements de stock sont liés à cet article, la suppression n'est pas encore possible.",
 				);
-			
-				$session = $request->getSession();
 				$session->set('dataTooltip', $dataTooltip);
 				
 				$url = $this->get('router')->generate('com_business_home');
@@ -177,7 +174,6 @@ class BusinessController extends Controller
 				$product->setDeleted(true);
 				$em->flush();
 					
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "La suppression de l'article &quot;".$product->getName()."&quot; est faite avec succès.",
 				);
@@ -188,7 +184,6 @@ class BusinessController extends Controller
 				return new RedirectResponse($url);
 			}
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un article qui n'éxiste pas.",
@@ -204,12 +199,7 @@ class BusinessController extends Controller
     public function viewProductBySlugAction($slug, Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$businessService = $this->container->get('com_business.business_service');
 		$productRepository = $em->getRepository('COMBusinessBundle:Product');
-		$stockRepository = $em->getRepository('COMBusinessBundle:Stock');
-		
-		$categoryRepository = $em->getRepository('COMBusinessBundle:Category');
-		$brandRepository = $em->getRepository('COMBusinessBundle:Brand');
 		
 		$product = $productRepository->findOneBy(array(
 			'slug' => $slug,
@@ -242,7 +232,6 @@ class BusinessController extends Controller
 		$businessService = $this->container->get('com_business.business_service');
 		$productRepository = $em->getRepository('COMBusinessBundle:Product');
 		$stockRepository = $em->getRepository('COMBusinessBundle:Stock');
-		
 		$categoryRepository = $em->getRepository('COMBusinessBundle:Category');
 		$brandRepository = $em->getRepository('COMBusinessBundle:Brand');
 		
@@ -411,21 +400,8 @@ class BusinessController extends Controller
             )));
         }
 		
-		/*
-		$errors = $formImage->getErrors(true);
-		
-		$response->setContent(json_encode(array(
-			'state' => 0,
-			'errors' => $errors,
-		)));
-		*/
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
-		/*
-		return $this->render('COMBusinessBundle:business:testformimage.html.twig', array(
-            'form' => $formImage->createView(),
-        ));
-		*/
     }
 
 	public function deleteProductimageAction($product_id, $productimage_id)
@@ -572,6 +548,7 @@ class BusinessController extends Controller
 		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$product = $productRepository->find($product_id);
+		$session = $request->getSession();
 		
 		if($product){
 			$productInit = new ProductInit();
@@ -660,7 +637,6 @@ class BusinessController extends Controller
 				$em->persist($product);
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "L'édition de l'article &quot;".$product->getName()."&quot; est faite avec succès.",
 				);
@@ -688,7 +664,6 @@ class BusinessController extends Controller
 				'treeviewmenu' => 'product',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un article qui n'éxiste pas.",

@@ -24,6 +24,7 @@ class SearchController extends Controller
 		
 		$q = $request->query->get('q');
 		$q = trim($q);
+		$session = $request->getSession();
 		
 		if($q != ""){
 			$products = $productRepository->getProductSearch($q);
@@ -61,7 +62,6 @@ class SearchController extends Controller
 				'students' => $students,
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -70,7 +70,6 @@ class SearchController extends Controller
 			
 			return $this->render('COMPlatformBundle:platform:search.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Veuillez tapez votre critère de recherche.",

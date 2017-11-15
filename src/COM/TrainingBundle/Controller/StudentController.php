@@ -119,6 +119,7 @@ class StudentController extends Controller
 		$studentgroupRepository = $em->getRepository('COMTrainingBundle:Studentgroup');
 		
 		$student = $studentRepository->find($student_id);
+		$session = $request->getSession();
 		
 		if($student){
 			$studentgroups = $studentgroupRepository->findBy(array(
@@ -134,7 +135,6 @@ class StudentController extends Controller
 				'time' => time(),
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -143,7 +143,6 @@ class StudentController extends Controller
 			
 			return $this->render('COMTrainingBundle:training:view-student.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à la fiche d'un étudiant qui n'éxiste pas.",
@@ -164,6 +163,7 @@ class StudentController extends Controller
 		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$student = $studentRepository->find($student_id);
+		$session = $request->getSession();
 		
 		if($student){
 			$person = $student->getPerson();
@@ -221,7 +221,6 @@ class StudentController extends Controller
 				$em->persist($student);
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "Modification de l'étudiant &quot;".$student->getPerson()->getName()." ".$student->getPerson()->getFirstname()."&quot; faite avec succès.",
 				);
@@ -243,7 +242,6 @@ class StudentController extends Controller
 				'treeviewmenu' => 'student',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à la fiche d'un étudiant qui n'éxiste pas.",
@@ -266,6 +264,7 @@ class StudentController extends Controller
 		$feeRepository = $em->getRepository('COMTrainingBundle:Fee');
 		
 		$student = $studentRepository->find($student_id);
+		$session = $request->getSession();
 		
 		if($student){
 			$studentgroups =  $studentgroupRepository->findBy(array(
@@ -273,7 +272,6 @@ class StudentController extends Controller
 				'deleted' => false,
 			));
 			
-			$session = $request->getSession();
 			if($studentgroups){				
 				$dataTooltip = array(
 					'type' => 'warning',
@@ -299,7 +297,6 @@ class StudentController extends Controller
 			}
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un fiche d'étudiant qui n'éxiste pas.",

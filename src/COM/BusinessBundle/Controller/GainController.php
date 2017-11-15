@@ -93,6 +93,7 @@ class GainController extends Controller
 		$gainRepository = $em->getRepository('COMBusinessBundle:Gain');
 		
 		$gain = $gainRepository->find($gain_id);
+		$session = $request->getSession();
 	
 		if($gain){
 			$data = array(
@@ -101,7 +102,6 @@ class GainController extends Controller
 				'treeviewmenu' => 'gain',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -110,7 +110,6 @@ class GainController extends Controller
 			
 			return $this->render('COMBusinessBundle:gain:view-gain.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un gain qui n'éxiste pas.",
@@ -130,8 +129,8 @@ class GainController extends Controller
 		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$gainInit = new GainInit();
-		
 		$gain = $gainRepository->find($gain_id);
+		$session = $request->getSession();
 
 		if($gain){
 			$gainInit->setName($gain->getName());
@@ -155,10 +154,8 @@ class GainController extends Controller
 				}
 
 				$em->persist($gain);
-				
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "L'édition sur le gain &quot;".$gain->getName()."&quot; est faite avec succès.",
 				);
@@ -180,7 +177,6 @@ class GainController extends Controller
 				'treeviewmenu' => 'gain',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un gain qui n'éxiste pas.",
@@ -199,12 +195,12 @@ class GainController extends Controller
 		$gainRepository = $em->getRepository('COMBusinessBundle:Gain');
 		
 		$gain = $gainRepository->find($gain_id);
+		$session = $request->getSession();
 		
 		if($gain){
 			$gain->setDeleted(true);
 			$em->flush();
 				
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'message' => "La suppression du gain &quot;".$gain->getName()."&quot; est faite avec succès.",
 			);
@@ -214,7 +210,6 @@ class GainController extends Controller
 			$url = $this->get('router')->generate('com_business_gain');
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un gain qui n'éxiste pas.",

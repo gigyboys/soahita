@@ -93,6 +93,7 @@ class ExpenditureController extends Controller
 		$expenditureRepository = $em->getRepository('COMBusinessBundle:Expenditure');
 		
 		$expenditure = $expenditureRepository->find($expenditure_id);
+		$session = $request->getSession();
 	
 		if($expenditure){
 			$data = array(
@@ -101,7 +102,6 @@ class ExpenditureController extends Controller
 				'treeviewmenu' => 'expenditure',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -110,7 +110,6 @@ class ExpenditureController extends Controller
 			
 			return $this->render('COMBusinessBundle:expenditure:view-expenditure.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une dépense qui n'éxiste pas.",
@@ -139,6 +138,7 @@ class ExpenditureController extends Controller
 			$expenditureInit->setDescription($expenditure->getDescription());
 			
 			$formInitExpenditure = $this->get('form.factory')->create(ExpenditureInitType::class, $expenditureInit);
+			$session = $request->getSession();
 			
 			if ($formInitExpenditure->handleRequest($request)->isValid()) {
 				
@@ -157,7 +157,6 @@ class ExpenditureController extends Controller
 				
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "L'édition sur la dépense &quot;".$expenditure->getName()."&quot; est faite avec succès.",
 				);
@@ -179,7 +178,6 @@ class ExpenditureController extends Controller
 				'treeviewmenu' => 'expenditure',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une dépense qui n'éxiste pas.",
@@ -192,18 +190,18 @@ class ExpenditureController extends Controller
 		}
     }
 	
-    public function  deleteExpenditureAction($expenditure_id, Request $request)
+    public function deleteExpenditureAction($expenditure_id, Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
 		$expenditureRepository = $em->getRepository('COMBusinessBundle:Expenditure');
 		
 		$expenditure = $expenditureRepository->find($expenditure_id);
+		$session = $request->getSession();
 		
 		if($expenditure){
 			$expenditure->setDeleted(true);
 			$em->flush();
 				
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'message' => "La suppression de la dépense &quot;".$expenditure->getName()."&quot; est faite avec succès.",
 			);
@@ -213,7 +211,6 @@ class ExpenditureController extends Controller
 			$url = $this->get('router')->generate('com_business_expenditure');
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une dépense qui n'éxiste pas.",

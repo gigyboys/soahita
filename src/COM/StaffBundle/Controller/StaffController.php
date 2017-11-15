@@ -48,7 +48,6 @@ class StaffController extends Controller
     public function addEmployeeAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
 		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
 		$platformService = $this->container->get('com_platform.platform_service');
 		
@@ -127,11 +126,11 @@ class StaffController extends Controller
     public function viewEmployeeAction($employee_id, Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
 		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
 		$absenceRepository = $em->getRepository('COMStaffBundle:Absence');
 		
 		$employee = $employeeRepository->find($employee_id);
+		$session = $request->getSession();
 		
 		if($employee){
 			$absences = $absenceRepository->findBy(array(
@@ -152,7 +151,6 @@ class StaffController extends Controller
 				'treeviewmenu' => 'employee',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -161,7 +159,6 @@ class StaffController extends Controller
 			
 			return $this->render('COMStaffBundle:staff:view-employee.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un employé qui n'éxiste pas.",
@@ -177,11 +174,11 @@ class StaffController extends Controller
     public function editEmployeeAction($employee_id, Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
 		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
 		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$employee = $employeeRepository->find($employee_id);
+		$session = $request->getSession();
 		
 		if($employee){
 			$person = $employee->getPerson();
@@ -252,7 +249,6 @@ class StaffController extends Controller
 				$em->persist($employee);
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "Modification de l'employé &quot;".$employee->getPerson()->getName()." ".$employee->getPerson()->getFirstname()."&quot; faite avec succès.",
 				);
@@ -275,7 +271,6 @@ class StaffController extends Controller
 				'treeviewmenu' => 'employee',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un employé qui n'éxiste pas.",
@@ -292,11 +287,10 @@ class StaffController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$absenceRepository = $em->getRepository('COMStaffBundle:Absence');
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
 		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
-		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$employee = $employeeRepository->find($employee_id);
+		$session = $request->getSession();
 		
 		if($employee){
 			$absences =  $absenceRepository->findBy(array(
@@ -308,7 +302,6 @@ class StaffController extends Controller
 				'deleted' => false,
 			));
 			
-			$session = $request->getSession();
 			if($absences || $absenceinterims){
 				$dataTooltip = array(
 					'type' => 'warning',
@@ -334,7 +327,6 @@ class StaffController extends Controller
 			}
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un fiche d'employé qui n'éxiste pas.",
@@ -376,7 +368,6 @@ class StaffController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$absenceRepository = $em->getRepository('COMStaffBundle:Absence');
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
 		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
 		$platformService = $this->container->get('com_platform.platform_service');
 		
@@ -473,11 +464,10 @@ class StaffController extends Controller
     public function viewAbsenceAction($absence_id, Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
-		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
 		$absenceRepository = $em->getRepository('COMStaffBundle:Absence');
 		
 		$absence = $absenceRepository->find($absence_id);
+		$session = $request->getSession();
 		
 		if($absence){
 			$data = array(
@@ -486,7 +476,6 @@ class StaffController extends Controller
 				'treeviewmenu' => 'employee',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -495,7 +484,6 @@ class StaffController extends Controller
 			
 			return $this->render('COMStaffBundle:staff:view-absence.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une absence qui n'éxiste pas.",
@@ -512,11 +500,11 @@ class StaffController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$absenceRepository = $em->getRepository('COMStaffBundle:Absence');
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
 		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
 		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$absence = $absenceRepository->find($absence_id);
+		$session = $request->getSession();
 		
 		if($absence){
 			$employee = $absence->getEmployee();
@@ -574,7 +562,6 @@ class StaffController extends Controller
 					$em->persist($absence);
 					$em->flush();
 					
-					$session = $request->getSession();
 					$dataTooltip = array(
 						'message' => "L'édition de l'absence pour l'employé &quot;".$employee->getPerson()->getName()." ".$employee->getPerson()->getFirstname()."&quot; est fait avec succès.",
 					);
@@ -622,7 +609,6 @@ class StaffController extends Controller
 			
 			return $this->render('COMStaffBundle:staff:edit-absence.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une absence qui n'éxiste pas.",
@@ -639,17 +625,15 @@ class StaffController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$absenceRepository = $em->getRepository('COMStaffBundle:Absence');
-		$personRepository = $em->getRepository('COMPlatformBundle:Person');
-		$employeeRepository = $em->getRepository('COMStaffBundle:Employee');
 		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$absence = $absenceRepository->find($absence_id);
+		$session = $request->getSession();
 		
 		if($absence){
 			$absence->setDeleted(true);
 			$em->flush();
 				
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'message' => "La suppression de l'absence pour l'employé &quot;".$absence->getEmployee()->getPerson()->getName()."&quot; est faite avec succès.",
 			);
@@ -659,7 +643,6 @@ class StaffController extends Controller
 			$url = $this->get('router')->generate('com_staff_absence');
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une absence qui n'éxiste pas.",

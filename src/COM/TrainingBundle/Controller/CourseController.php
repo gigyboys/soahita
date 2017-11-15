@@ -89,6 +89,7 @@ class CourseController extends Controller
 		$groupRepository = $em->getRepository('COMTrainingBundle:Group');
 		
 		$course = $courseRepository->find($course_id);
+		$session = $request->getSession();
 		
 		if($course){
 			$groups = $groupRepository->findBy(array(
@@ -102,7 +103,6 @@ class CourseController extends Controller
 				'treeviewmenu' => 'course',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -111,7 +111,6 @@ class CourseController extends Controller
 			
 			return $this->render('COMTrainingBundle:training:view-course.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un cours qui n'éxiste pas.",
@@ -130,6 +129,7 @@ class CourseController extends Controller
 		$courseRepository = $em->getRepository('COMTrainingBundle:Course');
 		
 		$course = $courseRepository->find($course_id);
+		$session = $request->getSession();
 		
 		if($course){
 			$courseInit = new CourseInit();
@@ -152,7 +152,6 @@ class CourseController extends Controller
 				$em->persist($course);
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "La modification sur le cours &quot;".$course->getName()."&quot; est faite avec succès.",
 				);
@@ -173,7 +172,6 @@ class CourseController extends Controller
 				'treeviewmenu' => 'course',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un cours qui n'éxiste pas.",
@@ -195,6 +193,7 @@ class CourseController extends Controller
 		$feeRepository = $em->getRepository('COMTrainingBundle:Fee');
 		
 		$course = $courseRepository->find($course_id);
+		$session = $request->getSession();
 		
 		if($course){
 			$groups =  $groupRepository->findBy(array(
@@ -202,7 +201,6 @@ class CourseController extends Controller
 				'deleted' => false,
 			));
 			
-			$session = $request->getSession();
 			if($groups){				
 				$dataTooltip = array(
 					'type' => 'warning',
@@ -228,7 +226,6 @@ class CourseController extends Controller
 			}
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à un cours qui n'éxiste pas.",

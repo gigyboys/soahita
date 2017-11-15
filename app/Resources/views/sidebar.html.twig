@@ -23,7 +23,7 @@
 		<ul class="sidebar-menu" data-widget="tree">
 			<li class="header">NAVIGATION PRINCIPALE</li>
 			
-			<li class="{% if treeview is not defined %}active{% endif %}"><a href="{{ path('com_platform_home') }}"><i class="fa fa-dashboard"></i>  <span>Tableau de bord</span></a></li>
+			<li class="{% if treeview is not defined %}active{% endif %}"><a href="{{ path('com_platform_home') }}"><i class="fa fa-dashboard"></i> <span>Tableau de bord</span></a></li>
 			
 			<li class="treeview{% if treeview is defined %}{% if treeview == 'business' %} active{% endif %}{% endif %}">
 				<a href="#"><i class="fa fa-shopping-cart"></i> <span>Magasin</span>
@@ -65,7 +65,6 @@
 			</li>
 			
 			<li class="{% if treeview is defined %}{% if treeview == 'taking' %} active{% endif %}{% endif %}"><a href="{{ path('com_platform_taking') }}"><i class="fa fa-line-chart"></i> <span>Recettes</span></a></li>
-			
 		</ul>
 	</section>
 </aside>

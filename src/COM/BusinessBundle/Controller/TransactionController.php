@@ -62,7 +62,6 @@ class TransactionController extends Controller
     public function addTransactionAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$transactionRepository = $em->getRepository('COMBusinessBundle:Transaction');
 		$transactionTypeRepository = $em->getRepository('COMBusinessBundle:TransactionType');
 		$platformService = $this->container->get('com_platform.platform_service');
 		
@@ -113,10 +112,9 @@ class TransactionController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$transactionRepository = $em->getRepository('COMBusinessBundle:Transaction');
-		$transactionTypeRepository = $em->getRepository('COMBusinessBundle:TransactionType');
-		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$transaction = $transactionRepository->find($transaction_id);
+		$session = $request->getSession();
 	
 		if($transaction){
 			$data = array(
@@ -125,7 +123,6 @@ class TransactionController extends Controller
 				'treeviewmenu' => 'transaction',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -134,7 +131,6 @@ class TransactionController extends Controller
 			
 			return $this->render('COMBusinessBundle:transaction:view-transaction.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une transaction qui n'éxiste pas.",
@@ -156,6 +152,7 @@ class TransactionController extends Controller
 		
 		$transactionInit = new TransactionInit();
 		$transaction = $transactionRepository->find($transaction_id);
+		$session = $request->getSession();
 		
 		if($transaction){
 			$transactionInit->setTransactionTypeId($transaction->getTransactionType()->getId());
@@ -184,7 +181,6 @@ class TransactionController extends Controller
 				$em->persist($transaction);
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "La modification sur la transaction est faite avec succès.",
 				);
@@ -207,7 +203,6 @@ class TransactionController extends Controller
 				'treeviewmenu' => 'transaction',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une transaction qui n'éxiste pas.",
@@ -224,16 +219,14 @@ class TransactionController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$transactionRepository = $em->getRepository('COMBusinessBundle:Transaction');
-		$transactionTypeRepository = $em->getRepository('COMBusinessBundle:TransactionType');
-		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$transaction = $transactionRepository->find($transaction_id);
+		$session = $request->getSession();
 		
 		if($transaction){
 			$transaction->setDeleted(true);
 			$em->flush();
 				
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'message' => "La suppression de la transaction est faite avec succès.",
 			);
@@ -243,7 +236,6 @@ class TransactionController extends Controller
 			$url = $this->get('router')->generate('com_business_transaction');
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une transaction qui n'éxiste pas.",

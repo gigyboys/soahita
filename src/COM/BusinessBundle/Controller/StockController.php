@@ -57,7 +57,6 @@ class StockController extends Controller
     public function addStockAction($type, Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$stockRepository = $em->getRepository('COMBusinessBundle:Stock');
 		$productRepository = $em->getRepository('COMBusinessBundle:Product');
 		$platformService = $this->container->get('com_platform.platform_service');
 		$businessService = $this->container->get('com_business.business_service');
@@ -152,6 +151,7 @@ class StockController extends Controller
 		$stockRepository = $em->getRepository('COMBusinessBundle:Stock');
 		
 		$stock = $stockRepository->find($stock_id);
+		$session = $request->getSession();
 	
 		if($stock){
 			$data = array(
@@ -160,7 +160,6 @@ class StockController extends Controller
 				'treeviewmenu' => 'stock',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -168,7 +167,6 @@ class StockController extends Controller
 			}
 			return $this->render('COMBusinessBundle:stock:view-stock.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une ligne stock qui n'éxiste pas.",
@@ -187,10 +185,10 @@ class StockController extends Controller
 		$stockRepository = $em->getRepository('COMBusinessBundle:Stock');
 		$productRepository = $em->getRepository('COMBusinessBundle:Product');
 		$platformService = $this->container->get('com_platform.platform_service');
-		$businessService = $this->container->get('com_business.business_service');
 		
 		$stockInit = new StockInit();
 		$stock = $stockRepository->find($stock_id);
+		$session = $request->getSession();
 		
 		if($stock){
 			$stockInit->setProductId($stock->getProduct()->getId());
@@ -227,7 +225,6 @@ class StockController extends Controller
 						break;
 				}
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => $message,
 				);
@@ -252,7 +249,6 @@ class StockController extends Controller
 				'treeviewmenu' => 'stock',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une ligne stock qui n'éxiste pas.",
@@ -269,15 +265,14 @@ class StockController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$stockRepository = $em->getRepository('COMBusinessBundle:Stock');
-		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$stock = $stockRepository->find($stock_id);
+		$session = $request->getSession();
 		
 		if($stock){
 			$stock->setDeleted(true);
 			$em->flush();
 				
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'message' => "La suppression de la ligne stock pour l'article &quot".$stock->getProduct()->getName()."&quot est faite avec succès.",
 			);
@@ -287,7 +282,6 @@ class StockController extends Controller
 			$url = $this->get('router')->generate('com_business_stock');
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une ligne stock qui n'éxiste pas.",

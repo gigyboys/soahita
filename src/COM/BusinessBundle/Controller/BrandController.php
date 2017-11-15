@@ -43,8 +43,6 @@ class BrandController extends Controller
     public function addBrandAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$brandRepository = $em->getRepository('COMBusinessBundle:Brand');
-		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$brandInit = new BrandInit();
 		$formInitBrand = $this->get('form.factory')->create(BrandInitType::class, $brandInit);
@@ -73,7 +71,7 @@ class BrandController extends Controller
 
         return $this->render('COMBusinessBundle:brand:add-brand.html.twig', array(
 			'brandInit' => $brandInit,
-			'form' => $formInitBrand,
+			'form' => $formInitBrand->createView(),
 			'treeview' => 'business',
 			'treeviewmenu' => 'brand',
 		));
@@ -86,6 +84,7 @@ class BrandController extends Controller
 		$productRepository = $em->getRepository('COMBusinessBundle:Product');
 		
 		$brand = $brandRepository->find($brand_id);
+		$session = $request->getSession();
 		if($brand){
 			
 			$products = $productRepository->findBy(array(
@@ -99,7 +98,6 @@ class BrandController extends Controller
 				'treeviewmenu' => 'brand',
 			);
 			
-			$session = $request->getSession();
 			$dataTooltip = $session->get('dataTooltip');
 			if($dataTooltip){		
 				$data['dataTooltip'] = $dataTooltip;			
@@ -108,7 +106,6 @@ class BrandController extends Controller
 			
 			return $this->render('COMBusinessBundle:brand:view-brand.html.twig', $data);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une marque qui n'éxiste pas.",
@@ -125,12 +122,11 @@ class BrandController extends Controller
     {
 		$em = $this->getDoctrine()->getManager();
 		$brandRepository = $em->getRepository('COMBusinessBundle:Brand');
-		$platformService = $this->container->get('com_platform.platform_service');
 		
 		$brandInit = new BrandInit();
-		
 		$brand = $brandRepository->find($brand_id);
-
+		$session = $request->getSession();
+		
 		if($brand){
 			$brandInit->setName($brand->getName());
 			$brandInit->setDescription($brand->getDescription());
@@ -146,7 +142,6 @@ class BrandController extends Controller
 				
 				$em->flush();
 				
-				$session = $request->getSession();
 				$dataTooltip = array(
 					'message' => "L'édition de la marque &quot;".$brand->getName()."&quot; est faite avec succès.",
 				);
@@ -168,7 +163,6 @@ class BrandController extends Controller
 				'treeviewmenu' => 'brand',
 			));
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une marque qui n'éxiste pas.",
@@ -188,6 +182,7 @@ class BrandController extends Controller
 		$productRepository = $em->getRepository('COMBusinessBundle:Product');
 		
 		$brand = $brandRepository->find($brand_id);
+		$session = $request->getSession();
 		
 		if($brand){
 			$products =  $productRepository->findBy(array(
@@ -195,7 +190,6 @@ class BrandController extends Controller
 				'deleted' => false,
 			));
 			
-			$session = $request->getSession();
 			if($products){				
 				$dataTooltip = array(
 					'type' => 'warning',
@@ -216,7 +210,6 @@ class BrandController extends Controller
 			$url = $this->get('router')->generate('com_business_brand');
 			return new RedirectResponse($url);
 		}else{
-			$session = $request->getSession();
 			$dataTooltip = array(
 				'type' => 'warning',
 				'message' => "Vous vous tentez à accéder à une marque qui n'éxiste pas.",
