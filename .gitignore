@@ -17,5 +17,4 @@
 /web/bundles/
 !/web/media/
 /web/media/*
-!/web/upload/
-/web/upload/*
+/web/upload/
