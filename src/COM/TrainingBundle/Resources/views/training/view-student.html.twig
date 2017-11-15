@@ -1,0 +1,210 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% block title %}
+	Formation - Etudiant : {{ student.person.name }} {{ student.person.firstname }}
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+ <section class="content-header">
+      <h1>
+        Etudiant : {{ student.person.name }} {{ student.person.firstname }}
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#detail_tab" data-toggle="tab">Détails</a></li>
+              <li class=""><a href="#group_tab" data-toggle="tab">Groupe</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="detail_tab">
+					<div style="float:left; width: 140px">
+						<div id="change_image" date-type="person" data-target="{{ path('com_platform_person_change_image_popup', {'person_id': student.person.id})}}" style=" width: 120px;height:120px;cursor:pointer">
+							{# twig extension #}
+							{% set personimage=getPersonimage(student.person) %}										
+							<img id="person_image" src="{{ personimage  | imagine_filter('120x120') }}" style="width:120px; height:120px;" />
+							<img id="person_image" src="{{ personimage  | imagine_filter('150x150') }}" style="width:0px; height:0px;" />
+							<img id="person_image" src="http://localhost/SoahitaSymfony/web/asset/image/fond.jpg" style="width:0px; height:0px;" />
+						</div>
+					</div>
+					<div style="margin-left: 140px;">
+						<table>
+							<tr>
+								<td style="padding:5px">Nom</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.name }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Prénom</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.firstname }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Sexe</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">
+									{% if student.person.sex == 0 %}
+										Homme
+									{% else %}
+										Femme
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Date de naissance</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">
+									{% if student.person.birthdate is not null %}
+										{{ student.person.birthdate | date('d/m/Y') }}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Lieu de naissance</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.birthlocation }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">n&deg; CIN</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.cin }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">cin date</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">
+									{% if student.person.cindate is not null %}
+										{{ student.person.cindate  | date('d/m/Y')  }}
+									{% endif %}
+								</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">cin lieu</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.cinlocation }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">adresse</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.address }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Téléphone</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.phone }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Email</td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px">{{ student.person.email }}</td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">n&deg; matricule</span></td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px"><span style="font-weight:bold">{{ student.matricule }}</span></td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Frais à regler</span></td>
+								<td style="padding:5px">:</td>
+								<td style="padding:5px"><span style="font-weight:bold">
+									{% set sumRestFee=getSumRestFee(student) %}
+									{% if sumRestFee <= 0 %}
+										<span style="color:#090">{{ formatAmount(sumRestFee) }} Ar</span>
+									{% else %}
+										<span>{{ formatAmount(sumRestFee) }} Ar</span>
+									{% endif %}
+								</span></td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_training_edit_student', {'student_id': student.id}) }}" class="btn btn-flat btn-primary">Modifier</a> 
+							<a href="{{ path('com_training_generate_student_form', {'student_id': student.id}) }}?time={{ time }}" class="btn btn-flat btn-primary">Fiche étudiant</a> 
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+				
+                <div class="tab-pane" id="group_tab">
+					<div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Cours</th>
+                            <th>Groupe</th>
+                            <th>Frais total</th>
+                            <th>Frais payé</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for studentgroup in studentgroups %}
+							{% set student = studentgroup.student %}
+							<tr>
+								<td>{{ student.id }}</td>
+								<td>
+									{# twig extension #}
+									{% set personimage=getPersonimage(student.person) %}										
+									<img src="{{ personimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+								</td>
+								<td>
+									<a href="{{ path('com_training_view_student', {'student_id': student.id}) }}">
+									{{ student.person.name }} {{ student.person.firstname }}
+									</a>
+								</td>
+								<td>{{ studentgroup.group.course.name }}</td>
+								<td>{{ studentgroup.group.name }}</td>
+								<td>
+									{% set price=formatAmount(studentgroup.price) %}
+									{{ price }} Ar
+								</td>
+								<td>									
+									{% set sumFee=getSumFee(studentgroup) %}
+									{% if studentgroup.price <= sumFee %}
+										<span style="color:#090">{{ formatAmount(sumFee) }} Ar</span>
+									{% else %}
+										<span>{{ formatAmount(sumFee) }} Ar</span>
+									{% endif %}
+								</td>
+								<td class="actions">
+									<a href="{{ path('com_training_view_studentgroup', {'studentgroup_id': studentgroup.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_training_edit_studentgroup', {'studentgroup_id': studentgroup.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_training_delete_studentgroup', {'studentgroup_id': studentgroup.id}) }}" data-label="Voulez vous effectuer la suppression l'intégration de &quot;{{ studentgroup.student.person.name}}&quot; dans le groupe &quot;{{ studentgroup.group.name}}&quot;?" data-id="{{ studentgroup.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="Annulation d'intégration"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Cours</th>
+                            <th>Groupe</th>
+                            <th>Frais total</th>
+                            <th>Frais restant</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

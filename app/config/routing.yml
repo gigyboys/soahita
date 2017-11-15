@@ -1,7 +1,34 @@
+com_training:
+    resource: "@COMTrainingBundle/Resources/config/routing.yml"
+    prefix:   /
+
+com_staff:
+    resource: "@COMStaffBundle/Resources/config/routing.yml"
+    prefix:   /
+
+com_platform:
+    resource: "@COMPlatformBundle/Resources/config/routing.yml"
+    prefix:   /
+
 com_user:
     resource: "@COMUserBundle/Resources/config/routing.yml"
     prefix:   /
 
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+#lipp route
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"
+
+#put at last for using slug url
+com_business:
+    resource: "@COMBusinessBundle/Resources/config/routing.yml"
+    prefix:   /

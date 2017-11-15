@@ -1,0 +1,84 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}Modification de la transaction{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+        Transaction (Modification)
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#add_tab" data-toggle="tab">Modification</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="add_tab"> 	
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+							<form class="form-horizontal" action="{{ path('com_business_edit_transaction', {'transaction_id': transaction.id}) }}" method="post">
+								<div class="box-body">
+
+								<div class="form-group">
+									<label for="select" class="col-sm-3 control-label">Type transaction <span>*</span></label>
+									<div class="col-sm-9">
+										<select class="form-control" id="select" name="transaction_init[transactionTypeId]" required>
+											{% for transactionType in transactionTypes %}
+												{% set selected = '' %}
+												{% if transactionInit.transactionTypeId == transactionType.id %}
+													{% set selected = 'selected' %}
+												{% endif %}
+												
+												<option value="{{ transactionType.id }}" {{ selected }}>{{ transactionType.name }}</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="date" class="col-sm-3 control-label">Date <span>*</span></label>
+
+									<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="jj/mm/aaaa" id="date" name="transaction_init[date]" value="{{ transactionInit.date | date('d/m/Y') }}" required>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="montant" class="col-sm-3 control-label">Montant <span>*</span></label>
+
+									<div class="col-sm-9">
+									<input type="number" class="form-control" id="montant" placeholder="montant" name="transaction_init[amount]" value="{{ transactionInit.amount }}" min="0" step="1" required>
+									</div>
+								</div>
+									
+								<div class="form-group">
+									<label for="montant" class="col-sm-3 control-label">Description </label>
+									<div class="col-sm-9">
+										<textarea class="" name="transaction_init[description]" placeholder="Ajouter ici la description de la transaction" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ transactionInit.description }}</textarea>
+									</div>
+								</div>
+
+								</div>
+								<!-- /.box-body -->
+								<div class="box-footer text-right">
+									<button id="product_init_save" type="submit" name="transaction_init[save]" class="btn btn-info" >Enregistrer</button>
+								</div>
+							</form>
+                        </div>
+                    </div>
+                </div>
+				
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

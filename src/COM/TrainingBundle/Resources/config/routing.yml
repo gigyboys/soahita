@@ -1,0 +1,76 @@
+com_training_home:
+    path:     /training
+    defaults: { _controller: COMTrainingBundle:Training:index }
+com_training_student:
+    path:     /training/students
+    defaults: { _controller: COMTrainingBundle:Student:index }
+com_training_add_student:
+    path:     /training/add-student
+    defaults: { _controller: COMTrainingBundle:Student:addStudent }
+com_training_view_student:
+    path:     /training/view-student/{student_id}
+    defaults: { _controller: COMTrainingBundle:Student:viewStudent }
+com_training_generate_student_form:
+    path:     /training/generate-student-form/{student_id}
+    defaults: { _controller: COMTrainingBundle:Student:generateStudentForm }
+
+com_training_edit_student:
+    path:     /training/edit-student/{student_id}
+    defaults: { _controller: COMTrainingBundle:Student:editStudent }
+com_training_delete_student:
+    path:     /training/delete-student/{student_id}
+    defaults: { _controller: COMTrainingBundle:Student:deleteStudent }
+
+
+com_training_course:
+    path:     /training/courses
+    defaults: { _controller: COMTrainingBundle:Course:index }
+com_training_add_course:
+    path:     /training/add-course
+    defaults: { _controller: COMTrainingBundle:Course:addCourse }
+com_training_view_course:
+    path:     /training/view-course/{course_id}
+    defaults: { _controller: COMTrainingBundle:Course:viewCourse }
+com_training_edit_course:
+    path:     /training/edit-course/{course_id}
+    defaults: { _controller: COMTrainingBundle:Course:editCourse }
+com_training_delete_course:
+    path:     /training/delete-course/{course_id}
+    defaults: { _controller: COMTrainingBundle:Course:deleteCourse }
+
+com_training_group:
+    path:     /training/groups
+    defaults: { _controller: COMTrainingBundle:Group:index }
+com_training_add_group:
+    path:     /training/add-group
+    defaults: { _controller: COMTrainingBundle:Group:addGroup }
+com_training_view_group:
+    path:     /training/view-group/{group_id}
+    defaults: { _controller: COMTrainingBundle:Group:viewGroup }
+com_training_edit_group:
+    path:     /training/edit-group/{group_id}
+    defaults: { _controller: COMTrainingBundle:Group:editGroup }
+com_training_delete_group:
+    path:     /training/delete-group/{group_id}
+    defaults: { _controller: COMTrainingBundle:Group:deleteGroup }
+
+
+com_training_view_studentgroup:
+    path:     /training/view-studentgroup/{studentgroup_id}
+    defaults: { _controller: COMTrainingBundle:Group:viewStudentgroup }
+com_training_edit_studentgroup:
+    path:     /training/edit-studentgroup/{studentgroup_id}
+    defaults: { _controller: COMTrainingBundle:Group:editStudentgroup }
+com_training_delete_studentgroup:
+    path:     /training/delete-studentgroup/{studentgroup_id}
+    defaults: { _controller: COMTrainingBundle:Group:deleteStudentgroup }
+
+com_training_edit_fee:
+    path:     /training/edit-fee/{fee_id}
+    defaults: { _controller: COMTrainingBundle:Group:editFee }
+com_training_view_fee:
+    path:     /training/view-fee/{fee_id}
+    defaults: { _controller: COMTrainingBundle:Group:viewFee }
+com_training_delete_fee:
+    path:     /training/delete-fee/{fee_id}
+    defaults: { _controller: COMTrainingBundle:Group:deleteFee }

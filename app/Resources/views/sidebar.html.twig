@@ -1,0 +1,71 @@
+<aside class="main-sidebar">
+	<section class="sidebar">
+		<div class="user-panel">
+			<div class="pull-left image change_image_sidebar" date-type="person" data-target="{{ path('com_platform_person_change_image_popup', {'person_id': app.user.person.id})}}" style="cursor:pointer">
+				{# twig extension #}
+				{% set personimage=getPersonimage(app.user.person) %}
+				<img src="{{ personimage | imagine_filter('120x120') }}" class="img-circle image_person_online" alt="User Image">
+			</div>
+			<div class="pull-left info">
+				<p title="{{ app.user.person.name ~ ' ' ~ app.user.person.firstname }}"><a href="{{ path('com_user_profile', {'username': app.user.username})}}">{{substrSpace( app.user.person.name ~ ' ' ~ app.user.person.firstname , 20) }}</a></p>
+				<a href="{{ path('com_user_profile', {'username': app.user.username})}}"><i class="fa fa-circle text-success"></i> Connecté</a>
+			</div>
+		</div>
+		<form action="{{ path('com_platform_search')}}" method="get" class="sidebar-form">
+			<div class="input-group">
+				<input type="text" name="q" class="form-control" placeholder="Rechercher..." required>
+				<span class="input-group-btn">
+					<button type="submit" name="" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
+		</form>
+		<ul class="sidebar-menu" data-widget="tree">
+			<li class="header">NAVIGATION PRINCIPALE</li>
+			
+			<li class="{% if treeview is not defined %}active{% endif %}"><a href="{{ path('com_platform_home') }}"><i class="fa fa-dashboard"></i>  <span>Tableau de bord</span></a></li>
+			
+			<li class="treeview{% if treeview is defined %}{% if treeview == 'business' %} active{% endif %}{% endif %}">
+				<a href="#"><i class="fa fa-shopping-cart"></i> <span>Magasin</span>
+					<span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+					</span>
+				</a>
+				<ul class="treeview-menu">
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'product' %}active{% endif %}{% endif %}"><a href="{{ path('com_business_home')}}"><i class="fa fa-circle-o"></i> Articles</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'brand' %}active{% endif %}{% endif %}"><a href="{{ path('com_business_brand')}}"><i class="fa fa-circle-o"></i> Marques</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'stock' %} active{% endif %}{% endif %}"><a href="{{ path('com_business_stock')}}"><i class="fa fa-circle-o"></i> Stocks</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'transaction' %}active{% endif %}{% endif %}"><a href="{{ path('com_business_transaction')}}"><i class="fa fa-bank"></i> Transactions bancaires</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'gain' %}active{% endif %}{% endif %}"><a href="{{ path('com_business_gain')}}"><i class="fa fa-circle-o"></i> Gains</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'expenditure' %}active{% endif %}{% endif %}"><a href="{{ path('com_business_expenditure')}}"><i class="fa fa-circle-o"></i> Charges et dépenses</a></li>
+				</ul>
+			</li>
+			<li class="treeview{% if treeview is defined %}{% if treeview == 'staff' %} active{% endif %}{% endif %}">
+				<a href="#"><i class="fa fa-group"></i> <span>Personnel</span>
+					<span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+					</span>
+				</a>
+				<ul class="treeview-menu">
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'employee' %}active{% endif %}{% endif %}"><a href="{{ path('com_staff_home')}}"><i class="fa fa-circle-o"></i> Employés</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'absence' %}active{% endif %}{% endif %}"><a href="{{ path('com_staff_absence')}}"><i class="fa fa-circle-o"></i> Absences</a></li>
+				</ul>
+			</li>
+			<li class="treeview{% if treeview is defined %}{% if treeview == 'training' %} active{% endif %}{% endif %}">
+				<a href="#"><i class="fa fa-graduation-cap"></i> <span>Formation</span>
+					<span class="pull-right-container">
+						<i class="fa fa-angle-left pull-right"></i>
+					</span>
+				</a>
+				<ul class="treeview-menu">
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'student' %}active{% endif %}{% endif %}"><a href="{{ path('com_training_student')}}"><i class="fa fa-circle-o"></i> Etudiants</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'course' %}active{% endif %}{% endif %}"><a href="{{ path('com_training_course')}}"><i class="fa fa-circle-o"></i> Cours</a></li>
+					<li class="{% if treeviewmenu is defined %}{% if treeviewmenu == 'group' %}active{% endif %}{% endif %}"><a href="{{ path('com_training_group')}}"><i class="fa fa-circle-o"></i> Groupes</a></li>
+				</ul>
+			</li>
+			
+			<li class="{% if treeview is defined %}{% if treeview == 'taking' %} active{% endif %}{% endif %}"><a href="{{ path('com_platform_taking') }}"><i class="fa fa-line-chart"></i> <span>Recettes</span></a></li>
+			
+		</ul>
+	</section>
+</aside>

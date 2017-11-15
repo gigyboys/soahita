@@ -1,0 +1,9 @@
+services:
+    com_training.training_service:
+        class: COM\TrainingBundle\Service\TrainingService
+        arguments: ["@doctrine.orm.entity_manager"]
+    com_training.training_extension:
+        class: COM\TrainingBundle\Twig\TrainingExtension
+        arguments: ["@com_training.training_service"]
+        tags:
+            - { name: twig.extension }

@@ -1,0 +1,12 @@
+php bin/console
+php bin/console generate:bundle
+php bin/console doctrine:generate:entity
+
+
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:update --dump-sql
+php bin/console doctrine:schema:update --force
+
+php bin/console doctrine:generate:entities COMBuzinessBundle:Product
+
+php bin/console assets:install

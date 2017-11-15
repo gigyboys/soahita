@@ -1,0 +1,64 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}Gains{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+			Gains
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#listin_tab" data-toggle="tab">Liste</a></li>
+			  <li class="pull-right"><a href="{{ path('com_business_add_gain') }}" class="btn btn-flat btn-danger"> Ajouter</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="listin_tab">    		
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th>Id</th>
+                            <th>Désignation</th>
+                            <th>Montant</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						
+						{% for gain in gains %}
+							<tr>
+								<td>{{ gain.id }}</td>
+								<td>{{ gain.name }}</td>
+								<td>{{ formatAmount(gain.amount) }}</td>
+								<td>{{ gain.date  | date('d/m/Y')  }}</td>
+								<td title="{{ gain.description }}">{{ substrSpace(gain.description, 30) }}</td>
+								<td class="actions">
+									<a href="{{ path('com_business_view_gain', {'gain_id': gain.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_business_edit_gain', {'gain_id': gain.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_business_delete_gain', {'gain_id': gain.id}) }}" data-label="Voulez vous effectuer la suppression du gain &quot;{{ gain.name}}&quot;?" data-id="{{ gain.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="supprimer le gain : {{ gain.name}}"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+						
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

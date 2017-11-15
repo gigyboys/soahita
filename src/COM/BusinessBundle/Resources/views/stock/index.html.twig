@@ -1,0 +1,133 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}Stock{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+			Stock
+      </h1>
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#listin_tab" data-toggle="tab">Liste entrée</a></li>
+              <li class=""><a href="#listout_tab" data-toggle="tab">Liste vente</a></li>
+			  <li class="pull-right"><a href="{{ path('com_business_add_stock', {'type': 'out'}) }}" class="btn btn-flat btn-danger"> Ajouter une vente</a></li>
+			  <li class="pull-right"><a href="{{ path('com_business_add_stock', {'type': 'in'}) }}" class="btn btn-flat btn-danger"> Ajouter une entrée</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="listin_tab">    		
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width: 30px">Id</th>
+                            <th style="width: 40px">Image</th>
+                            <th>Article</th>
+                            <th>Date entrée</th>
+                            <th>Prix d'achat unitaire (Ar)</th>
+                            <th>Quantité</th>
+                            <th>Prix total (Ar)</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						
+						{% for stock in stockins %}
+							{% if stock.product.deleted == false %}
+								<tr>
+									<td>{{ stock.id }}</td>
+									<td>
+										<span style="display:block; width:40px;height:40px; margin:5px">
+											{# twig extension #}
+											{% set productimage=getProductimage(stock.product) %}										
+											<img src="{{ productimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+										</span>
+									</td>
+									<td>
+										<a href="{{ path('com_business_view_product', {'product_id': stock.product.id}) }}">{{ stock.product.name }}</a>
+									</td>
+									<td>{{ stock.date | date('d/m/Y') }}</td>
+									<td>{{ formatAmount(stock.price) }}</td>
+									<td>{{ stock.quantity }}</td>
+									<td>{{ formatAmount(stock.price * stock.quantity) }}</td>
+									<td title="{{ stock.description }}">{{ substrSpace(stock.description, 30) }}</td>
+									<td class="actions">
+										<a href="{{ path('com_business_view_stock', {'stock_id': stock.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+										<a href="{{ path('com_business_edit_stock', {'stock_id': stock.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+										<span data-target="{{ path('com_business_delete_stock', {'stock_id': stock.id}) }}" data-label="Voulez vous effectuer la suppression de la ligne stock pour l'article &quot;{{ stock.product.name}}&quot;?" data-id="{{ stock.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="supprimer la ligne stock pour l'article : {{ stock.product.name}}"><i class="fa fa-times"></i></span>
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
+						
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="listout_tab">    		
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width: 30px">Id</th>
+                            <th style="width: 40px">Image</th>
+                            <th>Article</th>
+                            <th>Date de vente</th>
+                            <th>Prix de vente unitaire(Ar)</th>
+                            <th>Quantité</th>
+                            <th>Prix total (Ar)</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						
+						{% for stock in stockouts %}
+							<tr>
+								<td>{{ stock.id }}</td>
+								<td>
+									<span style="display:block; width:40px;height:40px; margin:5px">
+										{# twig extension #}
+										{% set productimage=getProductimage(stock.product) %}										
+										<img src="{{ productimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+									</span>
+								</td>
+								<td>
+									<a href="{{ path('com_business_view_product', {'product_id': stock.product.id}) }}">{{ stock.product.name }}</a>
+								</td>
+								<td>{{ stock.date  | date('d/m/Y')  }}</td>
+								<td>{{ formatAmount(stock.price) }}</td>
+								<td>{{ stock.quantity }}</td>
+								<td>{{ formatAmount(stock.price * stock.quantity) }}</td>
+								<td title="{{ stock.description }}">{{ substrSpace(stock.description, 30) }}</td>
+								<td class="actions">
+									<a href="{{ path('com_business_view_stock', {'stock_id': stock.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_business_edit_stock', {'stock_id': stock.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_business_delete_stock', {'stock_id': stock.id}) }}" data-label="Voulez vous effectuer la suppression de la ligne stock pour l'article &quot;{{ stock.product.name}}&quot;?" data-id="{{ stock.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="supprimer la ligne stock pour l'article : {{ stock.product.name}}"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+						
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

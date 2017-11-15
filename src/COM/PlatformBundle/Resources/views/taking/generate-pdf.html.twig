@@ -1,0 +1,60 @@
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#list_tab" data-toggle="tab">Détails sur la recette</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="list_tab"> 
+                    <div class="box-body">
+						{% set datebegin = taking.datebegin %}
+						{% set dateend = taking.dateend %}
+						{% if datebegin == dateend %}
+							Recette de <span style="font-weight:bold">{{ datebegin | date('d/m/Y') }}</span> : 
+						{% else %}
+							Recette de <span style="font-weight:bold">{{ datebegin | date('d/m/Y') }}</span> à <span style="font-weight:bold">{{ dateend | date('d/m/Y') }}</span> : 
+						{% endif %}
+						{#
+						Sortant : <span style="font-weight:bold">{{ formatAmount(amountOut) }} Ar</span> - Entrant :  <span style="font-weight:bold">{{ formatAmount(amountIn) }} Ar</span> - Profit : <span style="font-weight:bold">{{ formatAmount(profit) }} Ar</span> 
+						#}
+					</div>
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Désignation</th>
+                            <th>Montant unitaire (Ar)</th>
+                            <th>Quantité</th>
+                            <th>Montant total (Ar)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for takingline in takinglines %}
+							<tr>
+								<td>{{ takingline.date | date('d/m/Y') }}</td>
+								<td>{{ takingline.name }}</td>
+								<td>{{ formatAmount(takingline.amount) }}</td>
+								<td>{{ takingline.quantity }}</td>
+								<td>
+									{{ formatAmount(takingline.amount * takingline.quantity) }}
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th>Date</th>
+                            <th>Désignation</th>
+                            <th>Montant unitaire (Ar)</th>
+                            <th>Quantité</th>
+                            <th>Montant total (Ar)</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>

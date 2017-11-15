@@ -1,0 +1,102 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% block title %}
+	Aperçu de la ligne stock
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+ <section class="content-header">
+      <h1>
+		Aperçu de la ligne stock
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#detail_tab" data-toggle="tab">Détails</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="detail_tab">
+					<div>
+						<table>
+							<tr>
+								<td style="padding:5px">Article<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<a href="{{ path('com_business_view_product', {'product_id': stock.product.id}) }}">{{ stock.product.name }}</a>
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Type<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% if stock.type == 0 %}
+										Entrée en stock
+									{% else %}
+										vente
+									{% endif %}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">
+									{% if stock.type == 0 %}
+										Date d'entrée en stock
+									{% else %}
+										Date de vente
+									{% endif %}
+								<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ stock.date  | date('d/m/Y')  }}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Prix unitaire<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ formatAmount(stock.price) }} Ar
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Quantité<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ stock.quantity }}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Prix total<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ formatAmount(stock.price * stock.quantity) }} Ar
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Description<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ stock.description }}
+								<td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_business_edit_stock', {'stock_id': stock.id}) }}" class="btn btn-flat btn-primary">Modifier</a>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

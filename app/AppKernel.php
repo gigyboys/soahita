@@ -16,7 +16,15 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
+			
             new COM\UserBundle\COMUserBundle(),
+            new COM\PlatformBundle\COMPlatformBundle(),
+            new COM\BusinessBundle\COMBusinessBundle(),
+            new COM\StaffBundle\COMStaffBundle(),
+            new COM\TrainingBundle\COMTrainingBundle(),
+			
+            new Liip\ImagineBundle\LiipImagineBundle(),
+			new Ensepar\Html2pdfBundle\EnseparHtml2pdfBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

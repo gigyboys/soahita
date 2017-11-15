@@ -1,0 +1,41 @@
+<header class="main-header">
+	<a href="{{ path('com_platform_home') }}" class="logo">
+		<span class="logo-mini"><img src="{{ asset('asset/image/logo30x30.png') }}" style="width:30px;height:30px" alt="SH"></span>
+		<span class="logo-lg">SOAHITA</span>
+	</a>
+
+	<nav class="navbar navbar-static-top" role="navigation">
+		<a href="#" class="sidebar-toggle" data-target="{{ path('com_platform_body_collapse') }}" data-toggle="push-menu" role="button">
+			<span class="sr-only">Toggle navigation</span>
+		</a>
+
+		<div class="navbar-custom-menu">
+			<ul class="nav navbar-nav">
+				<li class="dropdown user user-menu">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						{# twig extension #}
+						{% set personimage=getPersonimage(app.user.person) %}
+						<img src="{{ personimage | imagine_filter('120x120') }}" class="user-image image_person_online" alt="User Image">
+						<span class="hidden-xs" title="{{ app.user.person.name ~ ' ' ~ app.user.person.firstname }}">{{substrSpace( app.user.person.name ~ ' ' ~ app.user.person.firstname , 40) }}</span>
+					</a>
+					<ul class="dropdown-menu">
+						<li class="user-header">
+							<img src="{{ personimage | imagine_filter('120x120') }}" class="img-circle image_person_online" alt="User Image">
+							<p>
+								{{ app.user.person.name }} {{ app.user.person.firstname }}<br />
+								{{ app.user.username }}
+							</p>
+						</li>
+
+						<li class="user-footer">
+							<div class="text-center">
+								<a href="{{ path('com_user_profile', {'username': app.user.username})}}" class="btn btn-default btn-flat">Mon compte</a>
+								<a href="{{ path('logout') }}" class="btn btn-default btn-flat">Deconnexion</a>
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</header>

@@ -1,0 +1,102 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}Listes d'article{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+        Articles
+      </h1>
+	
+    </section>
+
+    <!-- Main content -->
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#list_tab" data-toggle="tab">Liste</a></li>
+			  <li class="pull-right"><a href="{{ path('com_business_add_product') }}" class="btn btn-flat btn-danger"> Ajouter</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="list_tab">     
+					  {#{ form(form) }#}			
+                    <div class="box-body">
+                      <table id="table" class="table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width: 30px">Id</th>
+                            <th style="width: 40px">Image</th>
+                            <th>Designation</th>
+                            <th>Référence</th>
+                            <th>Marque</th>
+                            <th>Categorie</th>
+                            <th>Etat stock</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for product in products %}
+							<tr>
+								<td>{{ product.id }}</td>
+								<td>
+									<span style="display:block; width:40px;height:40px; margin:5px">
+										{# twig extension #}
+										{% set productimage=getProductimage(product) %}										
+										<img src="{{ productimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+									</span>
+								</td>
+								<td>{{ product.name }}</td>
+								<td>{{ product.reference }}</td>
+								<td>
+									{% if product.brand is not null %}
+										{{ product.brand.name }}
+									{% endif %}
+								</td>
+								<td>{{ product.category.name }}</td>
+								<td>
+									{% set qteStock = getQteStock(product) %}
+									
+									{{ qteStock }} 
+									{% if qteStock > product.quantityalert %}
+										<span class="greenpastille"></span>
+									{% else %}
+										<span class="redpastille"></span>
+									{% endif %}
+								</td>
+								<td class="actions">
+									<a href="{{ path('com_business_view_product', {'product_id': product.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_business_edit_product', {'product_id': product.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_business_delete_product', {'product_id': product.id}) }}" data-label="Voulez vous effectuer la suppression de l'article &quot;{{ product.name}}&quot;?" data-id="{{ product.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="archiver l'article : {{ product.name}}"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width: 30px">Id</th>
+                            <th style="width: 40px">Image</th>
+                            <th>Designation</th>
+                            <th>Référence</th>
+                            <th>Marque</th>
+                            <th>Categorie</th>
+                            <th>Etat stock</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

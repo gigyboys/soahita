@@ -1,0 +1,116 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% block title %}
+	Formation - Cours : {{ course.name }}
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+ <section class="content-header">
+      <h1>
+        Cours : {{ course.name }}
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#detail_tab" data-toggle="tab">Détails</a></li>
+              <li class=""><a href="#groups_tab" data-toggle="tab">Groupes</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="detail_tab">
+					<div>
+						<table>
+							<tr>
+								<td style="padding:5px">Nom<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ course.name }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Référence<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ course.reference }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Tarif estimé<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% set price=formatAmount(course.price) %}
+									{{ price }} Ar
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Description<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ course.description }}
+								<td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_training_edit_course', {'course_id': course.id}) }}" class="btn btn-flat btn-primary">Modifier</a>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+                <div class="tab-pane" id="groups_tab">
+					<div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th>Désignation</th>
+                            <th>Cours</th>
+                            <th>Tarif (Ar)</th>
+                            <th>Description</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for group in groups %}
+							<tr>
+								<td>{{ group.id }}</td>
+								<td>{{ group.name }}</td>
+								<td>{{ group.course.name }}</td>
+								<td>
+									{% set price=formatAmount(group.price) %}
+									{{ price }}
+								</td>
+								<td title="{{ group.description }}">{{ substrSpace(group.description, 30) }}</td>
+								<td class="actions">
+									<a href="{{ path('com_training_view_group', {'group_id': group.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_training_edit_group', {'group_id': group.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_training_delete_group', {'group_id': group.id}) }}" data-label="Voulez vous effectuer la suppression du groupe &quot;{{ group.name}}&quot;?" data-id="{{ group.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="suppression du groupe {{ group.name}}"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th>Désignation</th>
+                            <th>Cours</th>
+                            <th>Tarif (Ar)</th>
+                            <th>Description</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

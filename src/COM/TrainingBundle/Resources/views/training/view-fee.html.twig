@@ -1,0 +1,113 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% set group = fee.studentgroup.group %}
+{% set course = fee.studentgroup.group.course %}
+{% set student = fee.studentgroup.student %}
+
+{% block title %}
+	Aperçu du règlement lié à l'étudiant  {{ student.person.name }} {{ student.person.firstname }} dans le groupe  {{ group.name }}
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+ <section class="content-header">
+      <h1>
+       Aperçu du règlement lié à l'étudiant  {{ student.person.name }} {{ student.person.firstname }} dans le groupe  {{ group.name }}
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#detail_tab" data-toggle="tab">Détails</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="detail_tab">
+					<div style="float:left; width: 140px">
+						<div id="change_image" date-type="person" data-target="{{ path('com_platform_person_change_image_popup', {'person_id': student.person.id})}}" style=" width: 120px;height:120px; cursor:pointer">
+							{# twig extension #}
+							{% set personimage=getPersonimage(student.person) %}										
+							<img id="person_image" src="{{ personimage  | imagine_filter('120x120') }}" style="width:120px; height:120px;" />
+						</div>
+					</div>
+					<div style="margin-left: 140px;">
+						<table>
+							<tr>
+								<td style="padding:5px">Etudiant<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<a href="{{ path('com_training_view_student', {'student_id': student.id}) }}">
+									{{ student.person.name }} {{ student.person.firstname }}
+									</a>
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span>N&deg; matricule</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span>{{ student.matricule }}</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span>Cours</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span>
+									<a href="{{ path('com_training_view_course', {'course_id': course.id}) }}">
+									{{ course.name }}
+									</a>
+								</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span>Groupe</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span>
+									<a href="{{ path('com_training_view_group', {'group_id': group.id}) }}">
+									{{ group.name }}
+									</a>
+								</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Date du paiement</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<span style="font-weight:bold">
+										{{ fee.paymentdate | date('d/m/Y') }} 
+									</span>
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Montant</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<span style="font-weight:bold">
+										{{ formatAmount(fee.amount) }} Ar
+									</span>
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Description</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<span style="font-weight:bold">
+										{{ fee.description }} 
+									</span>
+								<td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_training_edit_fee', {'fee_id': fee.id}) }}" class="btn btn-flat btn-primary">Modifier</a>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

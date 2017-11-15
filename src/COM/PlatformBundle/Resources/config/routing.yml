@@ -1,0 +1,32 @@
+com_platform_home:
+    path:     /
+    defaults: { _controller: COMPlatformBundle:Dashboard:index }
+
+com_platform_person_change_image_popup:
+    path:     /platform/person/change-image-popup/{person_id}
+    defaults: { _controller: COMPlatformBundle:Person:changeImagePopup }
+com_platform_person_select_image:
+    path:     /platform/person/select-image/{person_id}/{personimage_id}
+    defaults: { _controller: COMPlatformBundle:Person:selectPersonimage }
+com_platform_person_upload_image:
+    path:     /platform/person/upload-image/{person_id}
+    defaults: { _controller: COMPlatformBundle:Person:uploadPersonimage }
+com_platform_person_delete_image:
+    path:     /platform/person/delete-image/{person_id}/{personimage_id}
+    defaults: { _controller: COMPlatformBundle:Person:deletePersonimage }
+
+com_platform_search:
+    path:     /search
+    defaults: { _controller: COMPlatformBundle:Search:search }
+
+com_platform_taking:
+    path:     /taking
+    defaults: { _controller: COMPlatformBundle:Taking:index }
+com_platform_taking_generate_pdf:
+    path:     /taking/generate-pdf/{taking_id}
+    defaults: { _controller: COMPlatformBundle:Taking:generatePdf }
+
+com_platform_body_collapse:
+    path:     /body-collapse
+    defaults: { _controller: COMPlatformBundle:Platform:collapse }
+

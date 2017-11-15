@@ -1,0 +1,93 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% block title %}Ajout d'une absence{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+<section class="content-header">
+  <h1>
+	Absence (ajout)
+  </h1>
+</section>
+
+<section class="content container-fluid">
+
+  <div class="row">
+	<div class="col-md-12">
+	  <div class="nav-tabs-custom">
+		<ul class="nav nav-tabs">
+		  <li class="active"><a href="#add_tab" data-toggle="tab">Ajout d'une absence</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="add_tab"> 	
+				<div class="row">
+					<div class="col-sm-8 col-sm-offset-2">
+						<form class="form-horizontal" action="{{ path('com_staff_add_absence') }}" method="post">
+							
+							<div class="form-group">
+								<label for="employeeId" class="col-sm-3 control-label">Employé <span>*</span></label>
+								<div class="col-sm-9">
+									<select class="form-control" id="employeeId" name="absence_init[employeeId]" required>
+										{% for employee in employees %}
+											{% set selected = '' %}
+											{% if employee.id == absenceInit.employeeId %}
+												{% set selected = 'selected' %}
+											{% endif %}
+											<option value="{{ employee.id }}" {{ selected }}>{{ employee.person.name }} {{ employee.person.firstname }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label for="employeeinterimId" class="col-sm-3 control-label">Employé par intérim</label>
+								<div class="col-sm-9">
+									<select class="form-control" id="employeeinterimId" name="absence_init[employeeinterimId]" required>
+										<option value="0"></option>
+										{% for employee in employees %}
+											{% set selected = '' %}
+											{% if employee.id == absenceInit.employeeinterimId %}
+												{% set selected = 'selected' %}
+											{% endif %}
+											<option value="{{ employee.id }}" {{ selected }}>{{ employee.person.name }} {{ employee.person.firstname }}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="datebegin" class="col-sm-3 control-label">Date et heure debut<span>*</span></label>
+
+								<div class="col-sm-9">
+									<input type="text" id="datebegin" name="absence_init[datebegin]" value="{{ absenceInit.datebegin }}" class="" style="padding-left:10px; padding-right:10px; border: 1px solid #ddd; height: 34px; border-radius: 1px; min-width:180px" id="date" placeholder="jj/mm/aaaa HH:mm" required>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="dateend" class="col-sm-3 control-label">Date et heure fin<span>*</span></label>
+
+								<div class="col-sm-9">
+									<input type="text" id="dateend" name="absence_init[dateend]" value="{{ absenceInit.dateend }}" class="" style="padding-left:10px; padding-right:10px; border: 1px solid #ddd; height: 34px; border-radius: 1px; min-width:180px" id="date" placeholder="jj/mm/aaaa HH:mm" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="reason" class="col-sm-3 control-label">Motif</label>
+								<div class="col-sm-9">
+									<textarea name="absence_init[reason]" id="reason" placeholder="Ajouter la raison de l'absence" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{ absenceInit.reason }}</textarea>
+								</div>
+							</div>
+							<div class="box-footer text-right">
+								<button type="submit" name="absence_init[save]" class="btn btn-info" >Enregistrer</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	  </div>
+	</div>
+  </div>
+  
+</section>
+{% endblock %}

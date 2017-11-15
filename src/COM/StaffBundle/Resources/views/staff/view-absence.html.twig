@@ -1,0 +1,88 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% set employee = absence.employee %}
+{% set employeeinterim = absence.employeeInterim %}
+
+{% block title %}
+	Aperçu de l'absence pour l'employé : {{ employee.person.name }} {{ employee.person.firstname }}
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+<section class="content-header">
+      <h1>
+        Aperçu de l'absence pour l'employé : <a href="{{ path('com_staff_view_employee', {'employee_id': employee.id}) }}" title="afficher">{{ employee.person.name }} {{ employee.person.firstname }}</a>
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#list_tab" data-toggle="tab">Détails de l'absence</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="list_tab">
+					<div style="float:left; width: 140px">
+						<div id="change_image" date-type="person" data-target="{{ path('com_platform_person_change_image_popup', {'person_id': employee.person.id})}}" style=" width: 120px;height:120px">
+							{# twig extension #}
+							{% set personimage=getPersonimage(employee.person) %}										
+							<img id="person_image" src="{{ personimage  | imagine_filter('120x120') }}" style="width:120px; height:120px;" />
+						</div>
+					</div>
+					<div style="margin-left: 140px;">
+						<table>
+							<tr>
+								<td style="padding:5px">Employé<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<a href="{{ path('com_staff_view_employee', {'employee_id': employee.id}) }}" title="afficher">
+										{{ employee.person.name }} {{ employee.person.firstname }}
+									</a>
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Interim<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% if employeeinterim is not null %}
+										<a href="{{ path('com_staff_view_employee', {'employee_id': employeeinterim.id}) }}" title="afficher">
+											{{ employeeinterim.person.name }} {{ employeeinterim.person.firstname }}
+										</a>
+									{% endif %}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Date et heure debut<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ absence.datebegin  | date('d/m/Y H:i')  }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Date et heure fin<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ absence.dateend  | date('d/m/Y H:i')  }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Motif d'absence<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ absence.reason }}<td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_staff_edit_absence', {'absence_id': absence.id}) }}" class="btn btn-flat btn-primary">Modifier</a>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+				
+                
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

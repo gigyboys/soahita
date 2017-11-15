@@ -2,7 +2,12 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: liip.yml }
     - { resource: "@COMUserBundle/Resources/config/services.yml" }
+    - { resource: "@COMPlatformBundle/Resources/config/services.yml" }
+    - { resource: "@COMBusinessBundle/Resources/config/services.yml" }
+    - { resource: "@COMStaffBundle/Resources/config/services.yml" }
+    - { resource: "@COMTrainingBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -68,3 +73,11 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+ensepar_html2pdf:
+    orientation: P
+    format: A4
+    lang: en
+    unicode: true
+    encoding: UTF-8
+    margin: [5,5,5,5]

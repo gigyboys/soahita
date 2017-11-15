@@ -1,0 +1,117 @@
+com_business_home:
+    path:     /business
+    defaults: { _controller: COMBusinessBundle:Business:index }
+com_business_add_product:
+    path:     /business/add-product
+    defaults: { _controller: COMBusinessBundle:Business:addProduct }
+com_business_delete_product:
+    path:     /business/delete-product/{product_id}
+    defaults: { _controller: COMBusinessBundle:Business:deleteProduct }
+com_business_view_product:
+    path:     /business/view-product/{product_id}
+    defaults: { _controller: COMBusinessBundle:Business:viewProduct }
+com_business_edit_product:
+    path:     /business/edit-product/{product_id}
+    defaults: { _controller: COMBusinessBundle:Business:editProduct }
+
+com_business_product_change_image_popup:
+    path:     /business/product/change-image-popup/{product_id}
+    defaults: { _controller: COMBusinessBundle:Business:changeImagePopup }
+com_business_product_select_image:
+    path:     /business/product/select-image/{product_id}/{productimage_id}
+    defaults: { _controller: COMBusinessBundle:Business:selectProductimage }
+com_business_product_upload_image:
+    path:     /business/product/upload-image/{product_id}
+    defaults: { _controller: COMBusinessBundle:Business:uploadProductimage }
+com_business_product_delete_image:
+    path:     /business/product/delete-image/{product_id}/{productimage_id}
+    defaults: { _controller: COMBusinessBundle:Business:deleteProductimage }
+
+    
+com_business_brand:
+    path:     /business/brand
+    defaults: { _controller: COMBusinessBundle:Brand:index }
+com_business_add_brand:
+    path:     /business/add-brand
+    defaults: { _controller: COMBusinessBundle:Brand:addBrand }
+com_business_view_brand:
+    path:     /business/view-brand/{brand_id}
+    defaults: { _controller: COMBusinessBundle:Brand:viewBrand }
+com_business_edit_brand:
+    path:     /business/edit-brand/{brand_id}
+    defaults: { _controller: COMBusinessBundle:Brand:editBrand }
+com_business_delete_brand:
+    path:     /business/delete-brand/{brand_id}
+    defaults: { _controller: COMBusinessBundle:Brand:deleteBrand }
+
+    
+com_business_transaction:
+    path:     /business/transaction
+    defaults: { _controller: COMBusinessBundle:Transaction:index }
+com_business_add_transaction:
+    path:     /business/add-transaction
+    defaults: { _controller: COMBusinessBundle:Transaction:addTransaction }
+com_business_view_transaction:
+    path:     /business/view-transaction/{transaction_id}
+    defaults: { _controller: COMBusinessBundle:Transaction:viewTransaction }
+com_business_edit_transaction:
+    path:     /business/edit-transaction/{transaction_id}
+    defaults: { _controller: COMBusinessBundle:Transaction:editTransaction }
+com_business_delete_transaction:
+    path:     /business/delete-transaction/{transaction_id}
+    defaults: { _controller: COMBusinessBundle:Transaction:deleteTransaction }
+
+com_business_stock:
+    path:     /business/stock
+    defaults: { _controller: COMBusinessBundle:Stock:index }
+com_business_add_stock:
+    path:     /business/add-stock-{type}
+    requirements:
+        type: in|out
+    defaults: { _controller: COMBusinessBundle:Stock:addStock }
+com_business_view_stock:
+    path:     /business/view-stock/{stock_id}
+    defaults: { _controller: COMBusinessBundle:Stock:viewStock }
+com_business_edit_stock:
+    path:     /business/edit-stock/{stock_id}
+    defaults: { _controller: COMBusinessBundle:Stock:editStock }
+com_business_delete_stock:
+    path:     /business/delete-stock/{stock_id}
+    defaults: { _controller: COMBusinessBundle:Stock:deleteStock }
+    
+com_business_expenditure:
+    path:     /business/expenditure
+    defaults: { _controller: COMBusinessBundle:Expenditure:index }
+com_business_add_expenditure:
+    path:     /business/add-expenditure
+    defaults: { _controller: COMBusinessBundle:Expenditure:addExpenditure }
+com_business_view_expenditure:
+    path:     /business/view-expenditure/{expenditure_id}
+    defaults: { _controller: COMBusinessBundle:Expenditure:viewExpenditure }
+com_business_edit_expenditure:
+    path:     /business/edit-expenditure/{expenditure_id}
+    defaults: { _controller: COMBusinessBundle:Expenditure:editExpenditure }
+com_business_delete_expenditure:
+    path:     /business/delete-expenditure/{expenditure_id}
+    defaults: { _controller: COMBusinessBundle:Expenditure:deleteExpenditure }
+    
+com_business_gain:
+    path:     /business/gain
+    defaults: { _controller: COMBusinessBundle:Gain:index }
+com_business_add_gain:
+    path:     /business/add-gain
+    defaults: { _controller: COMBusinessBundle:Gain:addGain }
+com_business_view_gain:
+    path:     /business/view-gain/{gain_id}
+    defaults: { _controller: COMBusinessBundle:Gain:viewGain }
+com_business_edit_gain:
+    path:     /business/edit-gain/{gain_id}
+    defaults: { _controller: COMBusinessBundle:Gain:editGain }
+com_business_delete_gain:
+    path:     /business/delete-gain/{gain_id}
+    defaults: { _controller: COMBusinessBundle:Gain:deleteGain }
+
+#for viewing product by slug
+com_business_view_product_slug:
+    path:     /{slug}
+    defaults: { _controller: COMBusinessBundle:Business:viewProductBySlug }

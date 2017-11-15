@@ -1,0 +1,32 @@
+com_staff_home:
+    path:     /staff
+    defaults: { _controller: COMStaffBundle:Staff:index }
+com_staff_add_employee:
+    path:     /staff/add-employee
+    defaults: { _controller: COMStaffBundle:Staff:addEmployee }
+com_staff_view_employee:
+    path:     /staff/view-employee/{employee_id}
+    defaults: { _controller: COMStaffBundle:Staff:viewEmployee }
+
+com_staff_edit_employee:
+    path:     /staff/edit-employee/{employee_id}
+    defaults: { _controller: COMStaffBundle:Staff:editEmployee }
+com_staff_delete_employee:
+    path:     /staff/delete-employee/{employee_id}
+    defaults: { _controller: COMStaffBundle:Staff:deleteEmployee }
+
+com_staff_absence:
+    path:     /staff/absence
+    defaults: { _controller: COMStaffBundle:Staff:absence }
+com_staff_view_absence:
+    path:     /staff/view-absence/{absence_id}
+    defaults: { _controller: COMStaffBundle:Staff:viewAbsence }
+com_staff_add_absence:
+    path:     /staff/add-absence
+    defaults: { _controller: COMStaffBundle:Staff:addAbsence }
+com_staff_edit_absence:
+    path:     /staff/edit-absence/{absence_id}
+    defaults: { _controller: COMStaffBundle:Staff:editAbsence }
+com_staff_delete_absence:
+    path:     /staff/delete-absence/{absence_id}
+    defaults: { _controller: COMStaffBundle:Staff:deleteAbsence }

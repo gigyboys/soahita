@@ -1,0 +1,10 @@
+services:
+    com_business.business_service:
+        class: COM\BusinessBundle\Service\BusinessService
+        arguments: ["@doctrine.orm.entity_manager"]
+    com_business.business_extension:
+        class: COM\BusinessBundle\Twig\BusinessExtension
+        arguments: ["@com_business.business_service"]
+        tags:
+            - { name: twig.extension }
+

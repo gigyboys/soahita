@@ -1,0 +1,188 @@
+{% extends "COMPlatformBundle::platform.html.twig" %}
+
+{% block title %}Recettes{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+        <i class="fa fa-line-chart"></i> Recettes
+      </h1>
+    </section>
+	
+    <section class="content-header">
+		<div>
+			<span class="dropdown" style="display:inline-block">
+				<button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Voir Recette pour
+				<span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu" aria-labelledby="menu1" style="box-shadow: 1px 1px 5px #999;min-width: 180px">
+					<li role="presentation">
+						<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post" style="">
+							<input type="hidden" value="{{ datebeginNow | date('d/m/Y') }}" name="takinginterval[datebegin]">
+							<input type="hidden" value="{{ dateendNow | date('d/m/Y') }}" name="takinginterval[dateend]">
+							<button type="submit" name="takinginterval[save]" style="background:transparent; border:1px;display: block;padding: 3px 20px;width:100%;text-align:left" >
+								Aujourd'hui
+							</button>
+						</form>
+					</li>
+					<li role="presentation">
+						<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post" style="">
+							<input type="hidden" value="{{ datebeginYesterday | date('d/m/Y') }}" name="takinginterval[datebegin]">
+							<input type="hidden" value="{{ dateendYesterday | date('d/m/Y') }}" name="takinginterval[dateend]">
+							<button type="submit" name="takinginterval[save]" style="background:transparent; border:1px;display: block;padding: 3px 20px;width:100%;text-align:left" >
+								Hier
+							</button>
+						</form>
+					</li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation">
+						<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post" style="">
+							<input type="hidden" value="{{ datebeginThisMonth | date('d/m/Y') }}" name="takinginterval[datebegin]">
+							<input type="hidden" value="{{ dateendThisMonth | date('d/m/Y') }}" name="takinginterval[dateend]">
+							<button type="submit" name="takinginterval[save]" style="background:transparent; border:1px;display: block;padding: 3px 20px;width:100%;text-align:left" >
+								Ce mois
+							</button>
+						</form>
+					</li>
+					<li role="presentation">
+						<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post" style="">
+							<input type="hidden" value="{{ datebeginThisYear | date('d/m/Y') }}" name="takinginterval[datebegin]">
+							<input type="hidden" value="{{ dateendThisYear | date('d/m/Y') }}" name="takinginterval[dateend]">
+							<button type="submit" name="takinginterval[save]" style="background:transparent; border:1px;display: block;padding: 3px 20px;width:100%;text-align:left" >
+								Cette année
+							</button>
+						</form>
+					</li>
+					<li role="presentation" class="divider"></li>
+					<li role="presentation">
+						<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post" style="">
+							<input type="hidden" value="{{ datebegin7days | date('d/m/Y') }}" name="takinginterval[datebegin]">
+							<input type="hidden" value="{{ dateend7days | date('d/m/Y') }}" name="takinginterval[dateend]">
+							<button type="submit" name="takinginterval[save]" style="background:transparent; border:1px;display: block;padding: 3px 20px;width:100%;text-align:left" >
+								Ces 7 derniers jours
+							</button>
+						</form>
+					</li>
+					<li role="presentation">
+						<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post" style="">
+							<input type="hidden" value="{{ datebegin30days | date('d/m/Y') }}" name="takinginterval[datebegin]">
+							<input type="hidden" value="{{ dateend30days | date('d/m/Y') }}" name="takinginterval[dateend]">
+							<button type="submit" name="takinginterval[save]" style="background:transparent; border:1px;display: block;padding: 3px 20px;width:100%;text-align:left" >
+								Ces 30 derniers jours
+							</button>
+						</form>
+					</li>
+					<li role="presentation">
+						<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post" style="">
+							<input type="hidden" value="{{ datebegin365days | date('d/m/Y') }}" name="takinginterval[datebegin]">
+							<input type="hidden" value="{{ dateend365days | date('d/m/Y') }}" name="takinginterval[dateend]">
+							<button type="submit" name="takinginterval[save]" style="background:transparent; border:1px;display: block;padding: 3px 20px;width:100%;text-align:left" >
+								Ces 365 derniers jours
+							</button>
+						</form>
+					</li>
+					<!--
+					<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Toute</a></li>
+					-->
+				</ul>
+			</span>
+		</div> 
+		<form class="form-horizontal" action="{{ path('com_platform_taking') }}" method="post">
+			<span> Ou pour une période spécifique de : </span>
+			<span>
+				<input type="text" class="date" style="border: 1px solid #bbb; height: 34px; border-radius: 2px; min-width:200px; padding-left: 10px; padding-right: 10px" id="datebegintaking" placeholder="jj/mm/aaaa" value="{{ datebegin | date('d/m/Y') }}" name="takinginterval[datebegin]" required>
+			</span> 
+			<span>à : </span> 
+			<span>
+				 <input type="text" class="date" style="border: 1px solid #bbb; height: 34px; border-radius: 2px; min-width:200px; padding-left: 10px; padding-right: 10px" id="dateendtaking" placeholder="jj/mm/aaaa" value="{{ dateend | date('d/m/Y') }}" name="takinginterval[dateend]" required>
+			</span> 
+			<span>
+				<button id="product_init_save" type="submit" name="takinginterval[save]" class="btn btn-info" >Voir recette</button>
+			</span> 
+		</form>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#list_tab" data-toggle="tab">Détails sur la recette</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="list_tab"> 
+                    <div class="box-body">
+						{% if datebegin == dateend %}
+							Recette de <span style="font-weight:bold">{{ datebegin | date('d/m/Y') }}</span> : 
+						{% else %}
+							Recette de <span style="font-weight:bold">{{ datebegin | date('d/m/Y') }}</span> à <span style="font-weight:bold">{{ dateend | date('d/m/Y') }}</span> : 
+						{% endif %}
+						Sortant : <span style="font-weight:bold">{{ formatAmount(amountOut) }} Ar</span> - Entrant :  <span style="font-weight:bold">{{ formatAmount(amountIn) }} Ar</span> - Profit : <span style="font-weight:bold">{{ formatAmount(profit) }} Ar</span>. 
+						{#<a href="{{ path('com_platform_taking_generate_pdf', {'taking_id': taking.id}) }}?time={{ time }}">Exporter (pdf)</a>#}
+					</div>
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width: 30px">Id</th>
+                            <th>Date</th>
+                            <th>Désignation</th>
+                            <th>Montant unitaire (Ar)</th>
+                            <th>Quantité</th>
+                            <th>Montant total (Ar)</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for takingline in takinglines %}
+							<tr>
+								<td>{{ takingline.id }}</td>
+								<td>{{ takingline.date | date('d/m/Y') }}</td>
+								{% if takingline.entity == "stock" %}
+									{% set link = path('com_business_view_stock', {'stock_id': takingline.entityid}) %}
+								{% elseif takingline.entity == "gain" %}
+									{% set link = path('com_business_view_gain', {'gain_id': takingline.entityid}) %}
+								{% elseif takingline.entity == "expenditure" %}
+									{% set link = path('com_business_view_expenditure', {'expenditure_id': takingline.entityid}) %}
+								{% elseif takingline.entity == "fee" %}
+									{% set link = path('com_training_view_fee', {'fee_id': takingline.entityid}) %}
+								{% endif %}
+								<td><a href="{{ link }}">{{ takingline.name }}</a></td>
+								<td style="text-align:right">{{ formatAmount(takingline.amount) }}</td>
+								<td>{{ takingline.quantity }}</td>
+								<td style="text-align:right">
+									{% if takingline.amount < 0 %}
+										<span style="color:#800">{{ formatAmount(takingline.amount * takingline.quantity) }}</span>
+									{% else %}
+										<span style="color:#080">{{ formatAmount(takingline.amount * takingline.quantity) }}</span>
+									{% endif %}
+									
+								</td>
+								<td title="{{ takingline.description }}">
+									{{ substrSpace(takingline.description, 30) }}
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width: 30px">Id</th>
+                            <th>Date</th>
+                            <th>Désignation</th>
+                            <th>Montant unitaire (Ar)</th>
+                            <th>Quantité</th>
+                            <th>Montant total (Ar)</th>
+                            <th>Description</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      
+    </section>
+{% endblock %}

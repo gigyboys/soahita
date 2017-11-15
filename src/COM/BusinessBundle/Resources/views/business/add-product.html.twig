@@ -1,0 +1,102 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}Ajout d'article{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+        Ajout d'article
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#add_tab" data-toggle="tab">Ajout d'article</a></li>
+			  <li class="pull-right"><a href="{{ path('com_business_home') }}" class="btn btn-flat btn-danger"> Liste des articles</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="add_tab">     
+					{#{ form(form) }#}			
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+							<div class="">
+								<!-- form start -->
+								<form class="form-horizontal" action="{{ path('com_business_add_product') }}" method="post">
+									<div class="">
+										<div class="form-group">
+											<label for="select" class="col-sm-3 control-label">Categorie <span>*</span></label>
+											<div class="col-sm-9">
+												<select class="form-control" id="select" name="product_init[categoryId]" required>
+													{% for category in categories %}
+														<option value="{{ category.id }}">{{ category.name }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="select" class="col-sm-3 control-label">Marque <span>*</span></label>
+											<div class="col-sm-9">
+												<select class="form-control" id="selectMarque" name="product_init[brandId]" required>
+													<option value="0">Aucune marque</option>
+													{% for brand in brands %}
+														<option value="{{ brand.id }}">{{ brand.name }}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="designation" class="col-sm-3 control-label">Designation <span>*</span></label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" id="designation" name="product_init[name]" placeholder="designation" required>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="reference" class="col-sm-3 control-label">Référence</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" id="reference" name="product_init[reference]" placeholder="reference">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="quantityalert" class="col-sm-3 control-label">Quantité alerte<span>*</span></label>
+
+											<div class="col-sm-9">
+											<input type="number" class="form-control" id="quantityalert" placeholder="Quantité alerte" name="product_init[quantityalert]"  min="0" step="1" required>
+											</div>
+										</div>
+										
+										<div class="form-group">
+											<label for="description" class="col-sm-3 control-label">Description</label>
+											<div class="col-sm-9">
+												<textarea name="product_init[description]" id="description" placeholder="Ajouter la description de l'article" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+											</div>
+										</div>
+
+									</div>
+									<!-- /.box-body -->
+									<div class="box-footer text-right">
+										<button id="product_init_save" type="submit" name="product_init[save]" class="btn btn-info" >Enregistrer</button>
+									</div>
+									<!-- /.box-footer -->
+								</form>
+							</div>
+                        </div>
+                    </div>
+                </div>
+				
+            </div>
+            <!-- /.tab-content -->
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

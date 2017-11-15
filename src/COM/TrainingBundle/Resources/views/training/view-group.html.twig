@@ -1,0 +1,156 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% block title %}
+	Formation - Groupe : {{ group.name }} ({{ group.course.name }})
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+ <section class="content-header">
+      <h1>
+        Groupe : {{ group.name }} ({{ group.course.name }})
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#detail_tab" data-toggle="tab">Details</a></li>
+              <li class=""><a href="#students_tab" data-toggle="tab">Etudiants</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="detail_tab">
+					<div>
+						<table>
+							<tr>
+								<td style="padding:5px">Nom<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ group.name }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Cours<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ group.course.name }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Tarif estimé<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ formatAmount(group.price) }} Ar
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Description<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ group.description }}
+								<td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_training_edit_group', {'group_id': group.id}) }}" class="btn btn-flat btn-primary">Modifier</a>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+                <div class="tab-pane" id="students_tab">
+					<div class="box-body">
+						<form class="form-horizontal" action="{{ path('com_training_view_group', {'group_id': group.id}) }}" method="post">
+							<div class="box-body" style="font-weight:bold">Ajout d'un étudiant </div> 
+							<div class="box-body" >
+								<span>Etudiant : </span>
+								<span>
+									<select style="border: 1px solid #bbb; height: 34px; border-radius: 4px" id="select" name="studentgroup_init[studentId]" required>
+										{% for student in students %}
+										<option value="{{ student.id }}">{{ student.person.name }} {{ student.person.firstname }}</option>
+										{% endfor %}
+									</select> 
+								</span> 
+								<span>Frais total du cours (Ar): </span> 
+								<span>
+									 <input type="number" style="border: 1px solid #bbb; height: 34px; border-radius: 4px" id="price" placeholder="Frais de formation (Ar)" name="studentgroup_init[price]" value="{{ studentgroupInit.price }}" min="0" step="1" required> 
+								</span> 
+								<span>
+									<button id="product_init_save" type="submit" name="studentgroup_init[save]" class="btn btn-info" >Enregistrer</button>
+								</span> 
+							</div> 
+						</form>
+					</div>
+					<div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Matricule</th>
+                            <th>Frais total</th>
+                            <th>Montant payé</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for studentgroup in studentgroups %}
+							{% set student = studentgroup.student %}
+							<tr>
+								<td>{{ student.id }}</td>
+								<td>
+									{# twig extension #}
+									{% set personimage=getPersonimage(student.person) %}										
+									<img src="{{ personimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+								</td>
+								<td>
+									<a href="{{ path('com_training_view_student', {'student_id': student.id}) }}">
+									{{ student.person.name }} {{ student.person.firstname }}
+									</a>
+								</td>
+								<td>{{ student.matricule }}</td>
+								<td>
+									{% set price=formatAmount(studentgroup.price) %}
+									{{ price }} Ar
+								</td>
+								<td>
+									{% set sumFee=getSumFee(studentgroup) %}
+									{% if studentgroup.price <= sumFee %}
+										<span style="color:#090">{{ formatAmount(sumFee) }} Ar</span>
+									{% else %}
+										<span>{{ formatAmount(sumFee) }} Ar</span>
+									{% endif %}
+								</td>
+								<td class="actions">
+									<a href="{{ path('com_training_view_studentgroup', {'studentgroup_id': studentgroup.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_training_edit_studentgroup', {'studentgroup_id': studentgroup.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_training_delete_studentgroup', {'studentgroup_id': studentgroup.id}) }}" data-label="Voulez vous effectuer la suppression l'intégration de &quot;{{ studentgroup.student.person.name}}&quot; dans le groupe &quot;{{ studentgroup.group.name}}&quot;?" data-id="{{ studentgroup.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="Annulation d'intégration"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Matricule</th>
+                            <th>Frais total</th>
+                            <th>Montant payé</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

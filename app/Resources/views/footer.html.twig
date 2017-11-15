@@ -1,0 +1,14 @@
+<footer class="main-footer">
+	<div class="pull-right hidden-xs">
+	<strong>Copyright &copy; 2017 <a href="#">Soahita</a>.</strong> Tout droits réservés.
+	</div>
+	{# twig extension #}
+	{% set stateTaking=getStateTakingBetween("now"|date("Y-m-d"), "now"|date("Y-m-d")) %}	
+	Recette d'aujourd'hui : 
+	Sortant : <span style="font-weight:bold">{{ formatAmount(stateTaking.amountOut) }} Ar</span> - Entrant :  <span style="font-weight:bold">{{ formatAmount(stateTaking.amountIn) }} Ar</span> - Profit : <span style="font-weight:bold">{{ formatAmount(stateTaking.profit) }} Ar</span>. 
+	<form action="{{ path('com_platform_taking') }}" method="post" style="display: inline">
+		<input type="hidden" value="{{ "now" | date('d/m/Y') }}" name="takinginterval[datebegin]">
+		<input type="hidden" value="{{ "now" | date('d/m/Y') }}" name="takinginterval[dateend]">
+		<button type="submit" name="takinginterval[save]" style="background:transparent; border:0px;display: inline;">Voir les détails</button>
+	</form>
+</footer>

@@ -1,0 +1,78 @@
+{% extends "COMTrainingBundle::training.html.twig" %}
+
+{% block title %}Formation - Groupes{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+
+    <section class="content-header">
+      <h1>
+        Liste des groupes
+      </h1>
+	
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#list_tab" data-toggle="tab">Liste</a></li>
+			  <li class="pull-right"><a href="{{ path('com_training_add_group') }}" class="btn btn-flat btn-danger"> Ajouter</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="list_tab"> 	
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th>Désignation</th>
+                            <th>Cours</th>
+                            <th>Tarif (Ar)</th>
+                            <th>Description</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for group in groups %}
+							<tr>
+								<td>{{ group.id }}</td>
+								<td>{{ group.name }}</td>
+								<td>{{ group.course.name }}</td>
+								<td>
+									{% set price=formatAmount(group.price) %}
+									{{ price }}
+								</td>
+								<td title="{{ group.description }}">{{ substrSpace(group.description, 30) }}</td>
+								<td class="actions">
+									<a href="{{ path('com_training_view_group', {'group_id': group.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_training_edit_group', {'group_id': group.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_training_delete_group', {'group_id': group.id}) }}" data-label="Voulez vous effectuer la suppression du groupe &quot;{{ group.name}}&quot;?" data-id="{{ group.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="suppression du groupe {{ group.name}}"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th>Désignation</th>
+                            <th>Cours</th>
+                            <th>Tarif (Ar)</th>
+                            <th>Description</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends "COMTrainingBundle::training.html.twig" %}
+
+{% block title %}Formation : Edition d'information d'un étudiant{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+        Etudiant (modification)
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#add_tab" data-toggle="tab">Edition d'un étudiant</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="add_tab"> 	
+                    <div class="row">
+                        <div class="col-sm-8 col-sm-offset-2">
+							<form class="form-horizontal" action="{{ path('com_training_edit_student', {'student_id': student.id}) }}" method="post">
+								<div class="form-group">
+									<label for="name" class="col-sm-3 control-label">Nom <span>*</span></label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="name" name="student_init[name]" value="{{ studentInit.name }}" placeholder="nom" required>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="firstname" class="col-sm-3 control-label">Prénom</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="firstname" name="student_init[firstname]" value="{{ studentInit.firstname }}" placeholder="prénom">
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label for="sex" class="col-sm-3 control-label">Sexe <span>*</span></label>
+									<div class="col-sm-9">
+										<select class="form-control" id="sex" name="student_init[sex]" required>
+											{% if studentInit.sex == '1' %}
+												<option value="0">homme</option>
+												<option value="1" selected>femme</option>
+											{% else %}
+												<option value="0" selected>homme</option>
+												<option value="1">femme</option>
+											{% endif %}
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="birthdate" class="col-sm-3 control-label">Date de naissance</label>
+
+									<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="jj/mm/aaaa" id="birthdate" name="student_init[birthdate]" value="{% if studentInit.birthdate is not null %}{{ studentInit.birthdate | date('d/m/Y') }}{% endif %}">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="birthlocation" class="col-sm-3 control-label">Lieu de naissance</label>
+
+									<div class="col-sm-9">
+									<input type="text" class="form-control" id="birthlocation" placeholder="Lieu de naissance" name="student_init[birthlocation]" value="{{ studentInit.birthlocation }}">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="cin" class="col-sm-3 control-label">n&deg; CIN</label>
+
+									<div class="col-sm-9">
+									<input type="number" class="form-control" id="cin" placeholder="cin" name="student_init[cin]" value="{{ studentInit.cin }}" >
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="cindate" class="col-sm-3 control-label">Date CIN</label>
+
+									<div class="col-sm-9">
+									<input type="text" class="form-control" placeholder="jj/mm/aaaa" id="cindate" name="student_init[cindate]" value="{% if studentInit.cindate is not null %}{{ studentInit.cindate | date('d/m/Y') }}{% endif %}" >
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="cinlocation" class="col-sm-3 control-label">CIN lieu</label>
+
+									<div class="col-sm-9">
+									<input type="text" class="form-control" id="cinlocation" placeholder="CIN lieu" name="student_init[cinlocation]" value="{{ studentInit.cinlocation }}" >
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="address" class="col-sm-3 control-label">Adresse</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="address" name="student_init[address]" placeholder="adresse" value="{{ studentInit.address }}">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="phone" class="col-sm-3 control-label">Téléphone</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="phone" name="student_init[phone]" placeholder="téléphone" value="{{ studentInit.phone }}">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="email" class="col-sm-3 control-label">Email</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="email" name="student_init[email]" placeholder="email" value="{{ studentInit.email }}">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="matricule" class="col-sm-3 control-label">n&deg; matricule<span>*</span></label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="matricule" name="student_init[matricule]" value="{{ studentInit.matricule }}" placeholder="n&deg; matricule" required>
+									</div>
+								</div>
+								
+								<div class="box-footer text-right">
+									<button type="submit" name="student_init[save]" class="btn btn-info" >Enregistrer</button>
+								</div>
+							</form>
+                        </div>
+                    </div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

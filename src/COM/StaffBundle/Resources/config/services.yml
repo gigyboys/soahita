@@ -1,0 +1,9 @@
+services:
+    com_staff.staff_service:
+        class: COM\StaffBundle\Service\StaffService
+        arguments: ["@doctrine.orm.entity_manager"]
+    com_staff.business_extension:
+        class: COM\StaffBundle\Twig\StaffExtension
+        arguments: ["@com_staff.staff_service"]
+        tags:
+            - { name: twig.extension }

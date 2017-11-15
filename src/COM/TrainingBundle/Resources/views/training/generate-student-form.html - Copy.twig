@@ -1,0 +1,98 @@
+<table>
+	<tr>
+		<td style="width: 130px; vertical-align:top">
+			<div style="text-align:center">
+			
+				{# twig extension #}
+				{% set personimage=getPersonimage(student.person) %}										
+				<img id="person_image" src="{{ personimage  | imagine_filter('120x120') }}" style="width:120px; height:120px;" />
+			</div>
+			<div style="text-align:center">
+				<br />
+				Signature
+			</div>
+		</td>
+		<td>
+			<table>
+				<tr>
+					<td style="padding:5px">Nom</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.name }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">Prénom</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.firstname }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">Sexe</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">
+						{% if student.person.sex == 0 %}
+							Homme
+						{% else %}
+							Femme
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">Date de naissance</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.birthdate  | date('d/m/Y')  }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">Lieu de naissance</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.birthlocation }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">N&deg; CIN</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.cin }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">Fait le</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">
+						{% if student.person.cindate is not null %}
+							{{ student.person.cindate  | date('d/m/Y')  }}
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">A</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.cinlocation }}</td>
+				</tr>
+				<!--
+				<tr>
+					<td style="padding:5px">cin lieu</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.cinlocation }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">adresse</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.address }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">Téléphone</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.phone }}</td>
+				</tr>
+				<tr>
+					<td style="padding:5px">Email</td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px">{{ student.person.email }}</td>
+				</tr>
+				-->
+				<tr>
+					<td style="padding:5px"><span style="font-weight:bold">N&deg; matricule</span></td>
+					<td style="padding:5px">:</td>
+					<td style="padding:5px"><span style="font-weight:bold">{{ student.matricule }}</span></td>
+				</tr>
+			</table>
+			
+		</td>
+	</tr>
+</table>

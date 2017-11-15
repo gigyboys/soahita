@@ -1,0 +1,9 @@
+services:
+    com_platform.platform_service:
+        class: COM\PlatformBundle\Service\PlatformService
+        arguments: ["@doctrine.orm.entity_manager"]
+    com_platform.platform_extension:
+        class: COM\PlatformBundle\Twig\PlatformExtension
+        arguments: ["@com_platform.platform_service"]
+        tags:
+            - { name: twig.extension }

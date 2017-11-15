@@ -1,0 +1,187 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% set group = studentgroup.group %}
+{% set course = group.course %}
+{% set student = studentgroup.student %}
+
+{% block title %}
+	Formation - Situation de  {{ student.person.name }} {{ student.person.firstname }} dans le groupe  {{ group.name }}
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+ <section class="content-header">
+      <h1>
+        Situation de  <span style="font-weight:bold">{{ student.person.name }} {{ student.person.firstname }}</span> dans le groupe <span style="font-weight:bold">{{ group.name }}</span>
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#detail_tab" data-toggle="tab">Détails</a></li>
+              <li class=""><a href="#fee_tab" data-toggle="tab">Payements effectués</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="detail_tab">
+					<div style="float:left; width: 140px">
+						<div id="change_image" date-type="person" data-target="{{ path('com_platform_person_change_image_popup', {'person_id': student.person.id})}}" style=" width: 120px;height:120px; cursor:pointer">
+							{# twig extension #}
+							{% set personimage=getPersonimage(student.person) %}										
+							<img id="person_image" src="{{ personimage  | imagine_filter('120x120') }}" style="width:120px; height:120px;" />
+						</div>
+					</div>
+					<div style="margin-left: 140px;">
+						<table>
+							<tr>
+								<td style="padding:5px">Nom<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ student.person.name }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Prénom<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ student.person.firstname }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">N&deg; matricule</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span style="font-weight:bold">{{ student.matricule }}</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Cours</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span style="font-weight:bold">{{ course.name }}</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Groupe</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span style="font-weight:bold">{{ group.name }}</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Frais du cours</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<span style="font-weight:bold">
+										{{ formatAmount(studentgroup.price) }} Ar
+									</span>
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Frais payé</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									<span style="font-weight:bold">
+										{% set sumFee=getSumFee(studentgroup) %}
+										{{ formatAmount(sumFee) }} Ar
+									</span>
+								<td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_training_edit_studentgroup', {'studentgroup_id': studentgroup.id}) }}" class="btn btn-flat btn-primary">Modifier</a> 
+							{#<a href="{{ path('com_training_view_student', {'student_id': student.id}) }}" class="btn btn-flat btn-primary">Regler un payement</a> #}
+							<a href="{{ path('com_training_view_student', {'student_id': student.id}) }}" class="btn btn-flat btn-primary">Détails sur l'étudiant</a> 
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+				
+                <div class="tab-pane" id="fee_tab">
+					<div class="box-body">
+						<form class="form-horizontal" action="{{ path('com_training_view_studentgroup', {'studentgroup_id': studentgroup.id}) }}" method="post">
+							<div class="box-body" style="font-weight:bold">Effectuer un payement ({% set price=getSumFee(studentgroup) %} {{ formatAmount(price) }} Ar reglé sur {{ formatAmount(studentgroup.price) }} Ar)</div> 
+							<div class="box-body" >
+								<table>
+									<tr>
+										<td style="padding:5px"><label for="date">Date de payement <span>*</span></label><td>
+										<td style="padding:5px">:<td>
+										<td style="padding:5px">
+											<input type="text" class="" style="border: 1px solid #bbb; height: 34px; border-radius: 2px; min-width:200px" id="date" placeholder="jj/mm/aaaa" name="fee_init[paymentdate]" required>
+										<td>
+									</tr>
+									<tr>
+										{% set price=getSumFee(studentgroup) %}
+										{% set priceRest = studentgroup.price - price%}
+										
+										<td style="padding:5px"><label for="price">Montant à enregistrer <span>*</span></label><td>
+										<td style="padding:5px">:<td>
+										<td style="padding:5px">
+											<span>
+												 <input type="number" style="border: 1px solid #bbb; height: 34px; border-radius: 2px; min-width:200px" id="price" placeholder="Frais de formation (Ar)" name="fee_init[amount]" value="{% if priceRest >= 0 %}{{ priceRest }}{% else %}0{% endif %}" min="0" step="1" required> 
+											</span> 
+										<td>
+									</tr>
+									<tr>
+										<td style="padding:5px"><label for="description">Description</label><td>
+										<td style="padding:5px">:<td>
+										<td style="padding:5px">
+											<textarea style="border: 1px solid #bbb; border-radius: 2px; min-width:200px" id="description" placeholder="Description" name="fee_init[description]" value="{#{ studentgroupInit.price ~#}" required> </textarea> 
+										<td>
+									</tr>
+								</table>
+								<div>								
+									<span>
+										<button id="product_init_save" type="submit" name="fee_init[save]" class="btn btn-info" >Enregistrer</button>
+									</span> 
+								</div>
+							</div> 
+						</form>
+					</div>
+					<div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th>Montant</th>
+                            <th>Date de paiement</th>
+                            <th>Description</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for fee in fees %}
+							{% set student = studentgroup.student %}
+							<tr>
+								<td>{{ fee.id }}</td>
+								<td>
+									{% set price=formatAmount(fee.amount) %}
+									{{ price }} Ar
+								</td>
+								<td>{{ fee.paymentdate  | date('d/m/Y')  }}</td>
+								<td title="{{ fee.description }}">{{ substrSpace(fee.description, 40) }}</td>
+								<td class="actions">
+									<a href="{{ path('com_training_view_fee', {'fee_id': fee.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_training_edit_fee', {'fee_id': fee.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_training_delete_fee', {'fee_id': fee.id}) }}" data-label="Voulez vous effectuer la suppression du règlement de &quot;{{ fee.amount}} Ar&quot;?" data-id="{{ fee.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="Supprimer ce règlement"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th>Montant</th>
+                            <th>Date de paiement</th>
+                            <th>Description</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

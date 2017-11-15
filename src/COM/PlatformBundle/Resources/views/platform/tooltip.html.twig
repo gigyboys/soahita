@@ -1,0 +1,18 @@
+{% if dataTooltip is defined %}
+	
+	{% set tooltiptype = "success" %}
+	{% if dataTooltip.type is defined%}
+		{% set tooltiptype = dataTooltip.type %}
+	{% endif %}
+
+	{% set tooltipmessage = dataTooltip.message %}
+	
+	<div class="datatooltip {{ tooltiptype }}" style="">
+		{% if dataTooltip.closable is not defined%}
+			<div class="datatooltip_close pull-right" data-toggle="tooltip" data-placement="left" title="Fermer">×</div>
+		{% elseif dataTooltip.closable %}
+			<div class="datatooltip_close pull-right" data-toggle="tooltip" data-placement="left" title="Fermer">×</div>
+		{% endif %}
+		<div class="datatooltip_message">{{ tooltipmessage | raw }}</div>
+	</div>
+{% endif %}

@@ -1,4 +1,9 @@
 services:
-#    com_user.example:
-#        class: COM\UserBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    com_user.user_service:
+        class: COM\UserBundle\Service\UserService
+        arguments: ["@doctrine.orm.entity_manager"]
+    com_user.user_extension:
+        class: COM\UserBundle\Twig\UserExtension
+        arguments: ["@com_user.user_service"]
+        tags:
+            - { name: twig.extension }

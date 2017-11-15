@@ -1,0 +1,96 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}Listes des transactions bancaires{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+    <section class="content-header">
+      <h1>
+        Transactions bancaires
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#list_tab" data-toggle="tab">Liste</a></li>
+              <li class=""><a href="#detail_tab" data-toggle="tab">Détail</a></li>
+			  <li class="pull-right"><a href="{{ path('com_business_add_transaction') }}" class="btn btn-flat btn-danger"> Ajouter</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="list_tab">    		
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th>id</th>
+                            <th>Libellé</th>
+                            <th>Date</th>
+                            <th>Montant (Ar)</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						
+						{% for transaction in transactions %}
+							<tr>
+								<td>{{ transaction.id }}</td>
+								<td>{{ transaction.transactionType.name }}</td>
+								<td>{{ transaction.date  | date('d/m/Y')  }}</td>
+								<td style="text-align:right">
+									{{ formatAmount(transaction.amount) }}
+								</td>
+								<td title="{{ transaction.description }}">
+									{{ substrSpace(transaction.description, 30) }}
+								</td>
+								<td class="actions">
+									<a href="{{ path('com_business_view_transaction', {'transaction_id': transaction.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_business_edit_transaction', {'transaction_id': transaction.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_business_delete_transaction', {'transaction_id': transaction.id}) }}" data-label="Voulez vous effectuer la suppression de la transaction?" data-id="{{ transaction.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="supprimer la transaction"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+						
+                        </tbody>
+						
+                        <tfoot>
+                          <tr>
+                            <th>id</th>
+                            <th>Libellé</th>
+                            <th>Date</th>
+                            <th>Montant (Ar)</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="detail_tab">    		
+                    <div class="box-body">
+						<table>
+							<tr>
+								<td>Somme crédit </td>
+								<td> : </td>
+								<td> {{ sumCredit }} Ar</td>
+							</tr>
+							<tr>
+								<td>Somme débit </td>
+								<td> : </td>
+								<td> {{ sumDebit }} Ar</td>
+							</tr>
+						</table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}

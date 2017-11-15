@@ -1,0 +1,70 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% block title %}
+	Aperçu de la transaction
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+ <section class="content-header">
+      <h1>
+        Aperçu de la transaction
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#detail_tab" data-toggle="tab">Détails</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="detail_tab">
+					<div>
+						<table>
+							<tr>
+								<td style="padding:5px">Type<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ transaction.transactionType.name }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Montant<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% set amount=formatAmount(transaction.amount) %}
+									{{ amount }} Ar
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Date<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ transaction.date  | date('d/m/Y')  }}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Description<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{{ transaction.description }}
+								<td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_business_edit_transaction', {'transaction_id': transaction.id}) }}" class="btn btn-flat btn-primary">Modifier</a>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+				
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

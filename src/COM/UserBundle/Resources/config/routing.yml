@@ -1,6 +1,20 @@
-com_user_homepage:
-    path:     /
-    defaults: { _controller: COMUserBundle:User:index }
 com_user_login:
     path:     /login
     defaults: { _controller: COMUserBundle:User:login }
+
+com_user_profile:
+    path:     /user/{username}
+    defaults:
+        _controller: COMUserBundle:User:profile
+com_user_edit:
+    path:     /user/edit/{username}
+    defaults:
+        _controller: COMUserBundle:User:editUser
+com_user_edit_password:
+    path:     /user/edit-password/{username}
+    defaults:
+        _controller: COMUserBundle:User:editUserPassword
+com_user_set_new_password:
+    path:     /user/set-new-password/{username}/{key}
+    defaults:
+        _controller: COMUserBundle:User:setNewPassword

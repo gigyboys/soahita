@@ -1,0 +1,284 @@
+{% extends "COMStaffBundle::staff.html.twig" %}
+
+{% block title %}
+	Aperçu {{ employee.person.name }} {{ employee.person.firstname }}
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+<section class="content-header">
+      <h1>
+        {{ employee.person.name }} {{ employee.person.firstname }}
+      </h1>
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+				<li class="active"><a href="#list_tab" data-toggle="tab">Détails</a></li>
+				<li class=""><a href="#absence_tab" data-toggle="tab">Absences</a></li>
+				<li class=""><a href="#interimabsence_tab" data-toggle="tab">Interim</a></li>
+				<li class="pull-right"><a href="{{ path('com_staff_home') }}" class="btn btn-flat btn-danger"> Liste des employés</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="list_tab">
+					<div style="float:left; width: 140px">
+						<div id="change_image" date-type="person" data-target="{{ path('com_platform_person_change_image_popup', {'person_id': employee.person.id})}}" style=" width: 120px;height:120px;cursor:pointer">
+							{# twig extension #}
+							{% set personimage=getPersonimage(employee.person) %}										
+							<img id="person_image" src="{{ personimage  | imagine_filter('120x120') }}" style="width:120px; height:120px;" />
+						</div>
+					</div>
+					<div style="margin-left: 140px;">
+						<table>
+							<tr>
+								<td style="padding:5px">Nom<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.name }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Prénom<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.firstname }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Sexe<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% if employee.person.sex == 0 %}
+										Homme
+									{% else %}
+										Femme
+									{% endif %}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Date de naissance<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% if employee.person.birthdate is not null %}
+										{{ employee.person.birthdate | date('d/m/Y') }}
+									{% endif %}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Lieu de naissance<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.birthlocation }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">n&deg; CIN<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.cin }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">cin date<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% if employee.person.cindate is not null %}
+										{{ employee.person.cindate | date('d/m/Y') }}
+									{% endif %}
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">cin lieu<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.cinlocation }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">adresse<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.address }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Téléphone<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.phone }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px">Email<td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">{{ employee.person.email }}<td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Poste</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span style="font-weight:bold">{{ employee.position }}</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Date de prise de poste</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span style="font-weight:bold">{{ employee.positiondate  | date('d/m/Y')  }}</span><td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Salaire</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px">
+									{% set salary=formatAmount(employee.salary) %}
+									<span style="font-weight:bold">{{ salary }} Ar</span>
+								<td>
+							</tr>
+							<tr>
+								<td style="padding:5px"><span style="font-weight:bold">Présence</span><td>
+								<td style="padding:5px">:<td>
+								<td style="padding:5px"><span style="font-weight:bold">
+									{% if isPresent(employee) %}
+										<span class="greenpastille"></span>
+									{% else %}
+										<span class="redpastille"></span>
+									{% endif %}
+								</span><td>
+							</tr>
+						</table>
+						<div>
+							<a href="{{ path('com_staff_edit_employee', {'employee_id': employee.id}) }}" class="btn btn-flat btn-primary">Modifier</a>
+						</div>
+					</div>
+					<div class="clear">
+					</div>
+                </div>
+				
+                <div class="tab-pane" id="absence_tab"> 	
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Interim</th>
+                            <th>Date debut</th>
+                            <th>date fin</th>
+                            <th>motif</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for absence in absences %}
+							{% set employee = absence.employee %}
+							{% set employeeinterim = absence.employeeinterim %}
+							<tr>
+								<td>{{ absence.id }}</td>
+								<td>
+									{# twig extension #}
+									{% set personimage=getPersonimage(employee.person) %}										
+									<img src="{{ personimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+								</td>
+								<td>
+									<a href="{{ path('com_staff_view_employee', {'employee_id': employee.id}) }}" title="afficher">
+										{{ employee.person.name }} {{ employee.person.firstname }}
+									</a>
+								</td>
+								<td>
+									{% if employeeinterim is not null %}
+										<a href="{{ path('com_staff_view_employee', {'employee_id': employeeinterim.id}) }}" title="afficher">
+											{{ employeeinterim.person.name }} {{ employeeinterim.person.firstname }}
+										</a>
+									{% endif %}
+								</td>
+								<td>{{ absence.datebegin  | date('d/m/Y H:i')  }}</td>
+								<td>{{ absence.dateend  | date('d/m/Y H:i')  }}</td>
+								<td title="{{ absence.reason }}">{{ substrSpace(absence.reason, 30) }}</td>
+								<td class="actions">
+									<a href="{{ path('com_staff_view_absence', {'absence_id': absence.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_staff_edit_absence', {'absence_id': absence.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_staff_delete_absence', {'absence_id': absence.id}) }}" data-label="Voulez vous effectuer la suppression de l'absence lié à &quot;{{ absence.employee.person.name}}&quot;?" data-id="{{ absence.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="supprimer l'absence pour l'employé : {{ absence.employee.person.name}}"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Interim</th>
+                            <th>Date debut</th>
+                            <th>date fin</th>
+                            <th>motif</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+				
+                <div class="tab-pane" id="interimabsence_tab"> 	
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Interim</th>
+                            <th>Date debut</th>
+                            <th>date fin</th>
+                            <th>motif</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for absence in interimabsences %}
+							{% set employee = absence.employee %}
+							{% set employeeinterim = absence.employeeinterim %}
+							<tr>
+								<td>{{ absence.id }}</td>
+								<td>
+									{# twig extension #}
+									{% set personimage=getPersonimage(employee.person) %}										
+									<img src="{{ personimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+								</td>
+								<td>
+									<a href="{{ path('com_staff_view_employee', {'employee_id': employee.id}) }}" title="afficher">
+										{{ employee.person.name }} {{ employee.person.firstname }}
+									</a>
+								</td>
+								<td>
+									{% if employeeinterim is not null %}
+										<a href="{{ path('com_staff_view_employee', {'employee_id': employeeinterim.id}) }}" title="afficher">
+											{{ employeeinterim.person.name }} {{ employeeinterim.person.firstname }}
+										</a>
+									{% endif %}
+								</td>
+								<td>{{ absence.datebegin  | date('d/m/Y H:i')  }}</td>
+								<td>{{ absence.dateend  | date('d/m/Y H:i')  }}</td>
+								<td title="{{ absence.reason }}">{{ substrSpace(absence.reason, 30) }}</td>
+								<td class="actions">
+									<a href="{{ path('com_staff_view_absence', {'absence_id': absence.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_staff_edit_absence', {'absence_id': absence.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_staff_delete_absence', {'absence_id': absence.id}) }}" data-label="Voulez vous effectuer la suppression de l'absence lié à &quot;{{ absence.employee.person.name}}&quot;?" data-id="{{ absence.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="supprimer l'absence pour l'employé : {{ absence.employee.person.name}}"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Interim</th>
+                            <th>Date debut</th>
+                            <th>date fin</th>
+                            <th>motif</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+	
+{% endblock %}

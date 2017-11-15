@@ -1,0 +1,88 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}
+	Tableau de bord
+{% endblock %}
+
+{% block body %}
+{{ include("COMPlatformBundle:platform:tooltip.html.twig") }}
+	<section class="content" style="min-height: 200px;">
+		<h2 class="page-header">Info box</h2>  
+		<div class="row">
+			<div class="col-md-3 col-sm-6 col-xs-12">
+			  <div class="info-box">
+				<span class="info-box-icon bg-red"><i class="ion ion-ios-cart-outline"></i></span>
+
+				<div class="info-box-content">
+				  <span class="info-box-text"><a href="{{ path('com_business_stock')}}">Stocks</a></span>
+				  <span class="info-box-number">{{ stateStock.qteStockin }} articles</span>
+				  <span class="info-box-number">{{ formatAmount(stateStock.priceStockin) }} Ar</span>
+				</div>
+			  </div>
+			</div>
+			
+			<div class="clearfix visible-sm-block"></div>
+
+			<div class="col-md-3 col-sm-6 col-xs-12">
+			  <div class="info-box">
+				<span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+				<div class="info-box-content">
+				  <span class="info-box-text"><a href="{{ path('com_business_stock')}}">Ventes</a></span>
+				  <span class="info-box-number">{{ stateStock.qteStockout }} articles</span>
+				  <span class="info-box-number">{{ formatAmount(stateStock.priceStockout) }} Ar</span>
+				</div>
+			  </div>
+			</div>
+			<div class="col-md-3 col-sm-6 col-xs-12">
+			  <div class="info-box">
+				<span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
+
+				<div class="info-box-content">
+					<span class="info-box-text"><a href="{{ path('com_staff_home')}}">Employés</a></span>
+					<span class="info-box-number">
+						{{ absences }} {% if absences > 1 %}Absences{% else %}Absence{% endif %}
+					</span>
+				</div>
+			  </div>
+			</div>
+			<div class="col-md-3 col-sm-6 col-xs-12">
+			  <div class="info-box">
+				<span class="info-box-icon bg-aqua"><i class="ion ion-ios-gear-outline"></i></span>
+
+				<div class="info-box-content">
+					<span class="info-box-text"><a href="{{ path('com_training_student')}}">Formations</a></span>
+					<span class="info-box-number">
+					{{ reglements }} {% if reglements > 1 %}règlements{% else %}règlement{% endif %} à faire
+					</span>
+				</div>
+			  </div>
+			</div>
+		</div>
+	</section>
+		  
+	<section class="content" style="">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header with-border">
+						<h3 class="box-title">Recapitulatifs Transactions Bancaires</h3>
+					</div>
+					<div class="box-body">
+						<div class="col-md-9">
+							<canvas id="salesChart" style="height: 220px; width: 703px;" width="703" height="220"></canvas>
+						</div>
+						 <div class="col-md-3">
+							<canvas id="pieChart" style="height: 265px; width: 100%;" width="auto" height="265"></canvas>
+						</div>
+					</div>
+					
+					<script type="text/javascript">
+						 var chartData = {{ transactionsMonthly | json_encode() | raw }};
+						 var PieData = {{ transactions | json_encode() | raw }};
+					</script>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

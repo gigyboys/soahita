@@ -1,0 +1,206 @@
+{% extends "COMBusinessBundle::business.html.twig" %}
+
+{% block title %}Resultat de recherche{% endblock %}
+
+{% block body %}
+    <section class="content-header">
+      <h1>
+		Resultat de recherche pour : "{{ q }}"
+      </h1>
+	
+    </section>
+
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#product_tab" data-toggle="tab">Articles</a></li>
+              <li class=""><a href="#employee_tab" data-toggle="tab">Employés</a></li>
+              <li class=""><a href="#student_tab" data-toggle="tab">Etudiants</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="product_tab">
+                    <div class="box-body">
+                      
+                      <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Matricule</th>
+                            <th>téléphone</th>
+                            <th>Frais à regler (Ar)</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for student in students %}
+							<tr>
+								<td>{{ student.id }}</td>
+								<td>
+									{# twig extension #}
+									{% set personimage=getPersonimage(student.person) %}										
+									<img src="{{ personimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+								</td>
+								<td>{{ student.person.name }} {{ student.person.firstname }}</td>
+								<td>{{ student.matricule }}</td>
+								<td>{{ student.person.phone }}</td>
+								<td style="text-align:right">
+									{% set sumRestFee=getSumRestFee(student) %}
+									{% if sumRestFee <= 0 %}
+										<span style="color:#090">{{ formatAmount(sumRestFee) }}</span>
+									{% else %}
+										<span>{{ formatAmount(sumRestFee) }}</span>
+									{% endif %}
+								</td>
+								<td class="actions">
+									<a href="{{ path('com_training_view_student', {'student_id': student.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_training_edit_student', {'student_id': student.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_training_delete_student', {'student_id': student.id}) }}" data-label="Voulez vous effectuer la suppression de &quot;{{ student.person.name}}&quot; dans la liste des étudiants?" data-id="{{ student.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="suppression de {{ student.person.name}} dans la liste des étudiants"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Matricule</th>
+                            <th>téléphone</th>
+                            <th>Frais à regler (Ar)</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+					  
+                    </div>
+                </div>
+				
+                <div class="tab-pane" id="employee_tab">
+                    <div class="box-body">
+                      <table class="datatable table table-bordered table-striped">
+					<thead>
+					  <tr>
+						<th style="width:60px">Id</th>
+						<th style="width:60px">Image</th>
+						<th>Nom/Prénom</th>
+						<th>Poste</th>
+						<th>n&deg; cin</th>
+						<th>téléphone</th>
+						<th>salaire (Ar)</th>
+						<th>Présence</th>
+						<th style="max-width: 110px">Actions</th>
+					  </tr>
+					</thead>
+					<tbody>
+					
+					{% for employee in employees %}
+						<tr>
+							<td>{{ employee.id }}</td>
+							<td>
+								{# twig extension #}
+								{% set personimage=getPersonimage(employee.person) %}										
+								<img src="{{ personimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+							</td>
+							<td>{{ employee.person.name }} {{ employee.person.firstname }}</td>
+							<td>{{ employee.position }}</td>
+							<td>{{ employee.person.cin }}</td>
+							<td>{{ employee.person.phone }}</td>
+							<td style="text-align:right">
+								{% set salary=formatAmount(employee.salary) %}
+								{{ salary }}
+							</td>
+							<td style="text-align:center">
+								{% if isPresent(employee) %}
+									<span class="greenpastille"></span>
+								{% else %}
+									<span class="redpastille"></span>
+								{% endif %}
+							</td>
+							<td class="actions">
+								<a href="{{ path('com_staff_view_employee', {'employee_id': employee.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+								<a href="{{ path('com_staff_edit_employee', {'employee_id': employee.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+								<span data-target="{{ path('com_staff_delete_employee', {'employee_id': employee.id}) }}" data-label="Voulez vous effectuer la suppression de &quot;{{ employee.person.name}}&quot; dans la liste des employés?" data-id="{{ employee.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="suppression de {{ employee.person.name}} dans la liste des employés"><i class="fa fa-times"></i></span>
+							</td>
+						</tr>
+					{% endfor %}
+					
+					</tbody>
+					<tfoot>
+					  <tr>
+						<th style="width:60px">Id</th>
+						<th style="width:60px">Image</th>
+						<th>Nom/Prénom</th>
+						<th>Poste</th>
+						<th>n&deg; cin</th>
+						<th>téléphone</th>
+						<th>salaire (Ar)</th>
+						<th>Présence</th>
+						<th style="max-width: 110px">Actions</th>
+					  </tr>
+					</tfoot>
+				  </table>
+                    </div>
+                </div>
+				
+				<div class="tab-pane" id="student_tab">
+                    <div class="box-body">
+                       <table class="datatable table table-bordered table-striped">
+                        <thead>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Matricule</th>
+                            <th>téléphone</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+						
+						{% for student in students %}
+							<tr>
+								<td>{{ student.id }}</td>
+								<td>
+									{# twig extension #}
+									{% set personimage=getPersonimage(student.person) %}										
+									<img src="{{ personimage  | imagine_filter('40x40') }}" style="width:40px; height:40px;" />
+								</td>
+								<td>{{ student.person.name }} {{ student.person.firstname }}</td>
+								<td>{{ student.matricule }}</td>
+								<td>{{ student.person.phone }}</td>
+								<td class="actions">
+									<a href="{{ path('com_training_view_student', {'student_id': student.id}) }}" class="btn btn-flat btn-success btn-xs" title="afficher"><i class="fa fa-eye"></i></a>
+									<a href="{{ path('com_training_edit_student', {'student_id': student.id}) }}" class="btn btn-flat btn-primary btn-xs" title="modifier"><i class="fa fa-pencil-square"></i></a>
+									<span data-target="{{ path('com_training_delete_student', {'student_id': student.id}) }}" data-label="Voulez vous effectuer la suppression de &quot;{{ student.person.name}}&quot; dans la liste des étudiants?" data-id="{{ student.id}}" class="btn_delete_popup btn btn-flat btn-danger btn-xs" title="suppression de {{ student.person.name}} dans la liste des étudiants"><i class="fa fa-times"></i></span>
+								</td>
+							</tr>
+						{% endfor %}
+                        
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th style="width:60px">Id</th>
+                            <th style="width:60px">Image</th>
+                            <th>Nom/Prénom</th>
+                            <th>Matricule</th>
+                            <th>téléphone</th>
+                            <th style="max-width: 110px">Actions</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+{% endblock %}
